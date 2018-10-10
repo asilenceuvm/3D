@@ -1,0 +1,81 @@
+package pkg3d.main.gfx.objects;
+
+import java.awt.Color;
+import java.awt.Graphics;
+import java.util.ArrayList;
+import pkg3d.main.gfx.Camera;
+
+/**
+ *
+ * @author asile
+ */
+public class PolygonManager {
+    
+    private ArrayList<PolygonObject> drawablePolygons = new ArrayList();
+    private Camera camera;
+    private int[] renderOrder;
+    
+    public PolygonManager(Camera camera){
+        this.camera = camera;
+    }
+    
+    public void addPolygon(double[] x, double[] y, double[] z, Color color){
+        drawablePolygons.add(new PolygonObject(camera, x, y, z, color));
+    }
+    
+    public void update(int width, int height){
+        for(int i = 0; i < drawablePolygons.size(); i++){
+            drawablePolygons.get(i).update(width, height);
+            drawablePolygons.get(i).setAvgDist(getDist(drawablePolygons.get(i)));
+        }
+    }
+    
+    public void render(Graphics g){
+        setOrder();
+        for(int i = 0; i < drawablePolygons.size(); i++){
+            drawablePolygons.get(renderOrder[i]).render(g);
+        }
+    }
+    
+    private void setOrder(){
+        double[] k = new double[drawablePolygons.size()];
+        renderOrder = new int[drawablePolygons.size()];
+
+        for (int i = 0; i < drawablePolygons.size(); i++) {
+            k[i] = drawablePolygons.get(i).getAvgDist();
+            renderOrder[i] = i;
+        }
+
+        double temp;
+        int tempr;
+        for (int a = 0; a < k.length - 1; a++) {
+            for (int b = 0; b < k.length - 1; b++) {
+                if (k[b] < k[b + 1]) {
+                    temp = k[b];
+                    tempr = renderOrder[b];
+                    renderOrder[b] = renderOrder[b + 1];
+                    k[b] = k[b + 1];
+
+                    renderOrder[b + 1] = tempr;
+                    k[b + 1] = temp;
+                }
+            }
+        }
+    }
+    
+    private double getDist(PolygonObject p) {
+        double total = 0;
+        for (int i = 0; i < p.getX().length; i++) {
+            total += getDistanceToP(i,p);
+        }
+        
+        return total / p.getX().length;
+    }
+
+    private double getDistanceToP(int i, PolygonObject p) {
+        return Math.sqrt(
+                (camera.getPosition()[0] - p.getX()[i]) * (camera.getPosition()[0] - p.getX()[i])
+              + (camera.getPosition()[1] - p.getY()[i]) * (camera.getPosition()[1] - p.getY()[i])
+              + (camera.getPosition()[2] - p.getZ()[i]) * (camera.getPosition()[2] - p.getZ()[i]));
+    }
+}
