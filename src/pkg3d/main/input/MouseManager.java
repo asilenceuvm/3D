@@ -23,14 +23,12 @@ public class MouseManager implements MouseMotionListener{
     public void mouseDragged(MouseEvent me) {
         deltaX = me.getX() - width/2;
         deltaY = me.getY() - height/2;
-        centerMouse();
     }
 
     @Override
     public void mouseMoved(MouseEvent me) {
-        deltaX = me.getX() - width/2;
-        deltaY = me.getY() - height/2;
-        centerMouse();
+        deltaX = me.getX() - width / 2;
+        deltaY = me.getY() - height / 2;
     }
     
     public double getDeltaX(){
@@ -41,11 +39,5 @@ public class MouseManager implements MouseMotionListener{
         return deltaY;
     }
     
-    private void centerMouse() {
-        try {
-            Robot r = new Robot();
-            r.mouseMove((int) width/2, (int) height / 2);
-        } catch (AWTException e) {
-        }
-    }
+    
 }

@@ -27,17 +27,17 @@ public abstract class Loop {
             double currTime = (double) System.nanoTime() / 1000000000.0;
             if ((currTime - nextTime) > maxTimeDiff) {
                 nextTime = currTime;
+                
             }
             
             if (currTime >= nextTime) {
+                
                 // assign the time for the next update
                 nextTime += delta;
                 update();
-                
                 if ((currTime < nextTime) || (skippedFrames > maxSkippedFrames)) {
                     render();
                     skippedFrames = 1;
-                    
                 } else {
                     skippedFrames++;
                 }

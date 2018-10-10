@@ -1,4 +1,4 @@
-package pkg3d.main.gfx.objects;
+package pkg3d.main.gfx.object;
 
 import pkg3d.main.gfx.Vector;
 

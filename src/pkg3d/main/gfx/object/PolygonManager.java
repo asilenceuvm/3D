@@ -1,4 +1,4 @@
-package pkg3d.main.gfx.objects;
+package pkg3d.main.gfx.object;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -21,6 +21,12 @@ public class PolygonManager {
     
     public void addPolygon(double[] x, double[] y, double[] z, Color color){
         drawablePolygons.add(new PolygonObject(camera, x, y, z, color));
+    }
+    
+    public void addShape(Shape shape){
+        for(int i = 0; i < shape.getPolys().length; i++){
+            drawablePolygons.add(shape.getPolys()[i]);
+        }
     }
     
     public void update(int width, int height){

@@ -1,4 +1,4 @@
-package pkg3d.main.gfx.objects;
+package pkg3d.main.gfx.object;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -16,7 +16,7 @@ public class PolygonObject {
     private int vertecies;
     private Camera camera;
     
-    private boolean outlines=false;
+    private boolean outlines=true;
     private boolean rendering=true;
     
     private double avgDist;

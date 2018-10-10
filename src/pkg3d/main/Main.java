@@ -1,13 +1,17 @@
 package pkg3d.main;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
 import pkg3d.main.gfx.Camera;
 import pkg3d.main.gfx.Display;
-import pkg3d.main.gfx.objects.PolygonManager;
+import pkg3d.main.gfx.object.PolygonManager;
 import pkg3d.main.input.KeyManager;
 import pkg3d.main.input.MouseManager;
 
@@ -59,12 +63,9 @@ public class Main extends Loop{
         polygonManager.addPolygon(new double[]{0, 2, 2, 0}, new double[]{2, 2, 2, 2},  new double[]{0, 0, 3, 3}, Color.orange);
         polygonManager.addPolygon(new double[]{0, 0, 0, 0}, new double[]{0, 2, 2, 0},  new double[]{0, 0, 3, 3}, Color.blue);
         polygonManager.addPolygon(new double[]{2, 2, 2, 2}, new double[]{0, 2, 2, 0},  new double[]{0, 0, 3, 3}, Color.cyan);
-        polygonManager.addPolygon(new double[]{-2, -2, -2, -2}, new double[]{0, 4, 4, 0},  new double[]{0, 0, 6, 6}, Color.DARK_GRAY);
+        polygonManager.addPolygon(new double[]{-2, -2, -2, -2}, new double[]{0, 4, 4, 0},  new double[]{0, 0, 6, 6}, Color.WHITE);
         
-        //polygonManager.addPolygon(new double[]{-2, -2, -2, -2}, new double[]{1, 500, 500, 1},  new double[]{0, 0, .5, .5}, Color.black);
-        //polygonManager.addPolygon(new double[]{-2, -2, -2, -2}, new double[]{-100, 1, 1, -100},  new double[]{0, 0, .5, .5}, Color.black);
-        //polygonManager.addPolygon(new double[]{-2, -2, -2, -2}, new double[]{1, 500, 500, 1},  new double[]{0, 110, 110, 0}, Color.black);
-        //polygonManager.addPolygon(new double[]{-2, -2, -2, -2}, new double[]{-100, 1, 1, -100},  new double[]{110, 0, 0, 110}, Color.black);
+        invisibleMouse();
     }
 
     @Override
@@ -107,7 +108,7 @@ public class Main extends Loop{
             keys[3] = false;
         }
         
-        camera.move(keys, .1);
+        camera.move(keys, .5);
     }
     
     @Override
@@ -130,7 +131,13 @@ public class Main extends Loop{
 	bs.show();
 	g.dispose();
     }
-    
+    private void invisibleMouse() {
+        Toolkit toolkit = Toolkit.getDefaultToolkit();
+        BufferedImage cursorImage = new BufferedImage(1, 1, BufferedImage.TRANSLUCENT);
+        Cursor invisibleCursor = toolkit.createCustomCursor(cursorImage, new Point(0, 0), "InvisibleCursor");
+        display.getFrame().setCursor(invisibleCursor);
+    }
+
     public MouseManager getMouseManager(){
         return mouseManager;
     }

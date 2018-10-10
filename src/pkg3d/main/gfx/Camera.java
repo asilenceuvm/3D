@@ -1,7 +1,9 @@
 package pkg3d.main.gfx;
 
+import java.awt.AWTException;
+import java.awt.Robot;
 import pkg3d.main.Main;
-import pkg3d.main.gfx.objects.Plane;
+import pkg3d.main.gfx.object.Plane;
 import pkg3d.main.input.MouseManager;
 
 /**
@@ -10,8 +12,11 @@ import pkg3d.main.input.MouseManager;
  */
 public class Camera {
     
-    private int width,height;
     private MouseManager mouseManager;
+    private Utils utils;
+    
+    private int width,height;
+    
     
     private double[] position;
     private double[] viewPosition;
@@ -35,7 +40,9 @@ public class Camera {
         this.viewPosition = viewPosition;
         this.width = width;
         this.height = height;
+        
         this.mouseManager = mouseManager;
+        utils = new Utils();
     }
 
 
@@ -86,6 +93,7 @@ public class Camera {
             verticalLook = -0.999;
         }
         updateView();
+        utils.centerMouse(width, height);
     }
 
     private void moveTo(double x, double y, double z) {
@@ -163,6 +171,8 @@ public class Camera {
         
         rotateMove(mouseManager.getDeltaX()+9, mouseManager.getDeltaY() + 38);
     }
+    
+    
     
     public double[] getPosition() {
         return position;
