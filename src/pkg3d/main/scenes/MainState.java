@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import pkg3d.main.Main;
 import pkg3d.main.gfx.Camera;
 import pkg3d.main.gfx.object.PolygonManager;
+import pkg3d.main.input.Controller;
 
 /**
  *
@@ -15,14 +16,14 @@ public class MainState extends State{
     private Main main;
     
     private PolygonManager polygonManager;
-    private Camera camera;
+    private Controller controller;
     
     public MainState(Main main){
         this.main = main;
         
-        camera = new Camera(new double[]{-5, 0, 10}, new double[]{-5, -3, 0}, main.getWidth(), main.getHeight(), main.getMouseManager());
+        controller = new Controller(main);
         
-        polygonManager = new PolygonManager(camera);
+        polygonManager = new PolygonManager(controller.getCamera());
         polygonManager.addPolygon(new double[]{0, 2, 2, 0}, new double[]{0, 0, 2, 2},  new double[]{0, 0, 0, 0}, Color.red);
         polygonManager.addPolygon(new double[]{0, 2, 2, 0}, new double[]{0, 0, 2, 2},  new double[]{3, 3, 3, 3}, Color.red);
         polygonManager.addPolygon(new double[]{0, 2, 2, 0}, new double[]{0, 0, 0, 0},  new double[]{0, 0, 3, 3}, Color.green);
@@ -34,39 +35,8 @@ public class MainState extends State{
     
     @Override
     public void update() {
-        camera.update();
+        controller.update();
         polygonManager.update(main.getWidth(), main.getHeight());
-        movement();
-    }
-    public void movement(){
-        boolean[] keys = new boolean[4];
-        if(main.getKeyManager().getWPressed()){
-            keys[0] = true;
-        }
-        if(main.getKeyManager().getAPressed()){
-            keys[1] = true;
-        }
-        if(main.getKeyManager().getSPressed()){
-            keys[2] = true;
-        }
-        if(main.getKeyManager().getDPressed()){
-            keys[3] = true;
-        }
-        
-        if(main.getKeyManager().getWPressed() == false){
-            keys[0] = false;
-        }
-        if(main.getKeyManager().getAPressed() == false){
-            keys[1] = false;
-        }
-        if(main.getKeyManager().getSPressed() == false){
-            keys[2] = false;
-        }
-        if(main.getKeyManager().getDPressed() == false){
-            keys[3] = false;
-        }
-        
-        camera.move(keys, .5);
     }
 
     @Override
