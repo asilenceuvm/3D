@@ -19,7 +19,7 @@ public class Plane {
                 p.getY()[1] - p.getY()[0],
                 p.getZ()[1] - p.getZ()[0]);
 
-        vector1 = new Vector(p.getX()[2] - p.getX()[0],
+        vector2 = new Vector(p.getX()[2] - p.getX()[0],
                 p.getY()[2] - p.getY()[0],
                 p.getZ()[2] - p.getZ()[0]);
 

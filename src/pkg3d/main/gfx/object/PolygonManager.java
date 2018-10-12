@@ -24,6 +24,10 @@ public class PolygonManager {
         drawablePolygons.add(new PolygonObject(camera, x, y, z, color));
     }
     
+    public void addPolygon(PolygonObject p){
+        drawablePolygons.add(p);
+    }
+    
     public void addShape(Shape shape){
         for(int i = 0; i < shape.getPolys().length; i++){
             drawablePolygons.add(shape.getPolys()[i]);
@@ -41,6 +45,12 @@ public class PolygonManager {
         setOrder();
         for(int i = 0; i < drawablePolygons.size(); i++){
             drawablePolygons.get(renderOrder[i]).render(g);
+        }
+    }
+    
+    public void calcLighting(double x, double y, double z){
+        for(PolygonObject p: drawablePolygons){
+            p.calcLighting(x, y, z);
         }
     }
     
