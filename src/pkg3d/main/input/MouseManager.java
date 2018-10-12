@@ -1,7 +1,5 @@
 package pkg3d.main.input;
 
-import java.awt.AWTException;
-import java.awt.Robot;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 

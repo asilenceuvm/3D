@@ -2,12 +2,8 @@ package pkg3d.main.gfx;
 
 import java.awt.AWTException;
 import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.Graphics;
-import java.awt.Point;
 import java.awt.Robot;
-import java.awt.Toolkit;
-import java.awt.image.BufferedImage;
 
 /**
  *
@@ -15,7 +11,12 @@ import java.awt.image.BufferedImage;
  */
 public class Utils {
     
-    
+    public void drawMouseAim(Graphics g, int width, int height, int aimSight) {
+        g.setColor(Color.black);
+        g.drawLine((int) (width / 2 - aimSight), (int) (height / 2), (int) (width / 2 + aimSight), (int) (height / 2));
+        g.drawLine((int) (width / 2), (int) (height / 2 - aimSight), (int) (width / 2), (int) (height / 2 + aimSight));
+    }
+
     public void centerMouse(int width, int height) {
         try {
             Robot r = new Robot();

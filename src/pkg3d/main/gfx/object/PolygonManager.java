@@ -3,7 +3,6 @@ package pkg3d.main.gfx.object;
 import pkg3d.main.gfx.object.shapes.Shape;
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Polygon;
 import java.util.ArrayList;
 import pkg3d.main.gfx.Camera;
 

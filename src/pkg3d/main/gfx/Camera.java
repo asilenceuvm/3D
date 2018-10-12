@@ -1,8 +1,5 @@
 package pkg3d.main.gfx;
 
-import java.awt.AWTException;
-import java.awt.Robot;
-import pkg3d.main.Main;
 import pkg3d.main.gfx.object.Plane;
 import pkg3d.main.input.MouseManager;
 
