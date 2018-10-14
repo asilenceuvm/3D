@@ -13,7 +13,7 @@ public class RectangularPrism extends Shape{
     
     
     public RectangularPrism(Camera camera, double x, double y, double z, double xSideLength, double ySideLength, double zSideLength, Color c){
-        super(camera);
+        super(camera,x,y,z);
         
         corners = new double[8][3];
         

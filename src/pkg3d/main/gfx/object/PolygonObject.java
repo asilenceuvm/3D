@@ -80,8 +80,8 @@ public class PolygonObject {
     
     public void calcLighting(double x, double y, double z) {
         Plane lightingPlane = new Plane(this);
-        double angle = Math.acos(((lightingPlane.getNewVector().getX()) * x)
-                + ((lightingPlane.getNewVector().getY()) * y) + ((lightingPlane.getNewVector().getZ()) * z)
+        double angle = Math.acos(((lightingPlane.getNewVector().getX() * x)
+                + (lightingPlane.getNewVector().getY() * y) + (lightingPlane.getNewVector().getZ() * z))
                 / (Math.sqrt(x * x + y * y + z * z)));
 
         lighting = 0.2 + 1 - Math.sqrt(Math.toDegrees(angle) / 180);
@@ -89,12 +89,12 @@ public class PolygonObject {
         if (lighting > 1) {
             lighting = 1;
         }
-        if (lighting < 0.5) {
-            lighting = 0.5;
+        if (lighting < 0.3) {
+            lighting = 0.3;
         }
-        if(Double.isNaN(angle)){
-            lighting = 0.5;
-        }
+        //if(Double.isNaN(angle)){
+          //  lighting = 0.5; 
+        //}
     }
 
     public void setLighting(double lighting){

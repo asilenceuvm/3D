@@ -37,12 +37,12 @@ public class MainState extends State{
         
         cube = new RectangularPrism(controller.getCamera(), 0, 0, 0, 4,4,4, Color.lightGray);
         cube2 = new RectangularPrism(controller.getCamera(), -18, -16, -18, 36,4,36, Color.cyan);
-        box = new RectangularPrism(controller.getCamera(), 1, -3, 2, 1, 1, 1, Color.white);
+        box = new RectangularPrism(controller.getCamera(),0, -8, 2, 1, 1, 1, Color.white);
         //pyramid = new Pyramid(controller.getCamera(), 4, 4, 4.1, 4,4, Color.lightGray);
         
         polygonManager.addShape(cube);
         polygonManager.addShape(cube2);
-        polygonManager.addShape(box);
+        //polygonManager.addShape(box);
         
         PolygonObject p = new PolygonObject(controller.getCamera(), new double[]{5,5,9,9}, new double[]{5, 9, 9, 5}, 
                 new double[]{5,5,0,0},  new Color(.2f,.3f,.4f,.4f));
@@ -51,7 +51,7 @@ public class MainState extends State{
         //polygonManager.addShape(pyramid);
         
         lightManager = new LightManager();
-        lightManager.addLightSource(1, -3, 2, .5);
+        lightManager.addLightSource(0,8,2, .5);
         
     }
     

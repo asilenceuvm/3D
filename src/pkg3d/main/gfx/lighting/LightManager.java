@@ -24,4 +24,5 @@ public class LightManager {
             polygonManager.calcLighting(lightSources.get(i).getX(), lightSources.get(i).getY(), lightSources.get(i).getZ());
         }
     }
+    
 }
