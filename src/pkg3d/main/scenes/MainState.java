@@ -3,7 +3,9 @@ package pkg3d.main.scenes;
 import java.awt.Color;
 import java.awt.Graphics;
 import pkg3d.main.Main;
+import pkg3d.main.gfx.Vector;
 import pkg3d.main.gfx.lighting.LightManager;
+import pkg3d.main.gfx.lighting.Shadow;
 import pkg3d.main.gfx.object.PolygonManager;
 import pkg3d.main.gfx.object.PolygonObject;
 import pkg3d.main.gfx.object.shapes.Pyramid;
@@ -24,7 +26,7 @@ public class MainState extends State{
     
     private Controller controller;
     
-    private Shape cube, cube2;
+    private Shape cube, cube2, cube3;
     private Shape box;
     private Shape pyramid;
     
@@ -37,11 +39,14 @@ public class MainState extends State{
         
         cube = new RectangularPrism(controller.getCamera(), 0, 0, 0, 4,4,4, Color.lightGray);
         cube2 = new RectangularPrism(controller.getCamera(), -18, -16, -18, 36,4,36, Color.cyan);
+        cube3 = new RectangularPrism(controller.getCamera(), -4, -4, -26, 36,36,4, Color.cyan);
         box = new RectangularPrism(controller.getCamera(),0, -8, 2, 1, 1, 1, Color.white);
         //pyramid = new Pyramid(controller.getCamera(), 4, 4, 4.1, 4,4, Color.lightGray);
         
         polygonManager.addShape(cube);
         polygonManager.addShape(cube2);
+        
+        //polygonManager.addShape(cube3);
         //polygonManager.addShape(box);
         
         PolygonObject p = new PolygonObject(controller.getCamera(), new double[]{5,5,9,9}, new double[]{5, 9, 9, 5}, 
@@ -50,9 +55,11 @@ public class MainState extends State{
         //polygonManager.addPolygon(p);
         //polygonManager.addShape(pyramid);
         
-        lightManager = new LightManager();
-        lightManager.addLightSource(0,8,2, .5);
+        //System.out.println(polygonManager.getShapes().get(0).getPlanes()[0].getIntersection(new Vector(0,0,1), new double[]{-5,-5,-5})[2]);
         
+        lightManager = new LightManager(controller.getCamera());
+        lightManager.addLightSource(0, 12, 2, .5);
+        lightManager.update(polygonManager);
     }
     
     @Override
@@ -60,6 +67,7 @@ public class MainState extends State{
         controller.update();
         polygonManager.update(main.getWidth(), main.getHeight());
         lightManager.update(polygonManager);
+        
     }
 
     @Override

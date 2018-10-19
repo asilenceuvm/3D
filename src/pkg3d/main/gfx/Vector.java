@@ -29,6 +29,10 @@ public class Vector {
         return crossProduct;
     }
     
+    public String toString(){
+        return x + " " + y + " " + z;
+    }
+    
     public double getX(){
         return x;
     }

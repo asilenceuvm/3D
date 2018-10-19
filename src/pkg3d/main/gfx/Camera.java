@@ -166,7 +166,8 @@ public class Camera {
         calcFocusPos[0] *= zoom;
         calcFocusPos[1] *= zoom;
         
-        rotateMove(mouseManager.getDeltaX()+9, mouseManager.getDeltaY() + 38);
+        rotateMove(mouseManager.getDeltaX() + 9, mouseManager.getDeltaY() + 38);
+        //9 and 38 account for the mouse size vs the actual half point on the screen
     }
     
     

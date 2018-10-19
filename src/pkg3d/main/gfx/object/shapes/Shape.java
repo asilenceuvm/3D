@@ -2,6 +2,7 @@ package pkg3d.main.gfx.object.shapes;
 
 import java.util.ArrayList;
 import pkg3d.main.gfx.Camera;
+import pkg3d.main.gfx.object.Plane;
 import pkg3d.main.gfx.object.PolygonObject;
 
 /**
@@ -13,6 +14,7 @@ public abstract class Shape {
     protected Camera camera;
     protected PolygonObject[] polys;
     protected double[][] corners;
+    protected Plane[] planes;
     protected double x,y,z;
     
     public Shape(Camera camera, double x, double y, double z){
@@ -28,6 +30,10 @@ public abstract class Shape {
     
     public double[][] getCorners(){
         return corners;
+    }
+    
+    public Plane[] getPlanes(){
+        return planes;
     }
     
     public double getX(){

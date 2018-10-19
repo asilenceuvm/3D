@@ -13,6 +13,7 @@ import pkg3d.main.gfx.Camera;
 public class PolygonManager {
     
     private ArrayList<PolygonObject> drawablePolygons = new ArrayList();
+    private ArrayList<Shape> shapes = new ArrayList();
     private Camera camera;
     private int[] renderOrder;
     
@@ -32,6 +33,7 @@ public class PolygonManager {
         for(int i = 0; i < shape.getPolys().length; i++){
             drawablePolygons.add(shape.getPolys()[i]);
         }
+        shapes.add(shape);
     }
     
     public void update(int width, int height){
@@ -94,5 +96,12 @@ public class PolygonManager {
                 (camera.getPosition()[0] - p.getX()[i]) * (camera.getPosition()[0] - p.getX()[i])
               + (camera.getPosition()[1] - p.getY()[i]) * (camera.getPosition()[1] - p.getY()[i])
               + (camera.getPosition()[2] - p.getZ()[i]) * (camera.getPosition()[2] - p.getZ()[i]));
+    }
+    
+    public ArrayList getDrawablePolygons(){
+        return drawablePolygons;
+    }
+    public ArrayList<Shape> getShapes(){
+        return shapes;
     }
 }

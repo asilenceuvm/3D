@@ -33,6 +33,23 @@ public class Plane {
         newVector = Vector.crossProduct(V1, V2);
     }
     
+    public double[] getIntersection(Vector v, double[] start){
+        double t, plane, vector, div;
+        double[] points = new double[3];
+        
+        plane = (newVector.getX() * points[0] + newVector.getY() * points[1] + newVector.getZ() * points[2]);
+        vector =  (newVector.getX() * start[0] + newVector.getY() * start[1] + newVector.getZ() * start[2]);
+        div = newVector.getX() * v.getX() + newVector.getY() * v.getY() + newVector.getZ() * v.getZ();
+        
+        t = (plane - vector) / div;
+        
+        points[0] = start[0] + t * v.getX();
+        points[1] = start[1] + t * v.getY();
+        points[2] = start[2] + t * v.getZ();
+        
+        return points;
+    }
+    
     public Vector getNewVector(){
         return newVector;
     }

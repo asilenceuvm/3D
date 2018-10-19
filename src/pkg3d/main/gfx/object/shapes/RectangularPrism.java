@@ -3,6 +3,7 @@ package pkg3d.main.gfx.object.shapes;
 import java.awt.Color;
 import java.util.ArrayList;
 import pkg3d.main.gfx.Camera;
+import pkg3d.main.gfx.object.Plane;
 import pkg3d.main.gfx.object.PolygonObject;
 
 /**
@@ -47,6 +48,12 @@ public class RectangularPrism extends Shape{
         
         polys[5] = new PolygonObject(camera, new double[]{corners[0][0], corners[4][0], corners[7][0], corners[3][0]},
             new double[]{corners[0][1], corners[4][1], corners[7][1], corners[3][1]}, new double[]{corners[0][2], corners[4][2], corners[6][2], corners[3][2]}, c);
+        
+        planes = new Plane[6];
+        
+        for(int i  = 0; i < planes.length; i++){
+            planes[i] = new Plane(polys[i]);
+        }
         
     }
     
