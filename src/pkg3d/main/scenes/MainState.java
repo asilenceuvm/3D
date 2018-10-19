@@ -3,12 +3,12 @@ package pkg3d.main.scenes;
 import java.awt.Color;
 import java.awt.Graphics;
 import pkg3d.main.Main;
-import pkg3d.main.gfx.Vector;
+import pkg3d.main.entities.CubeEnemy;
+import pkg3d.main.entities.Entity;
+import pkg3d.main.entities.EntityManager;
 import pkg3d.main.gfx.lighting.LightManager;
-import pkg3d.main.gfx.lighting.Shadow;
 import pkg3d.main.gfx.object.PolygonManager;
 import pkg3d.main.gfx.object.PolygonObject;
-import pkg3d.main.gfx.object.shapes.Pyramid;
 import pkg3d.main.gfx.object.shapes.RectangularPrism;
 import pkg3d.main.gfx.object.shapes.Shape;
 import pkg3d.main.input.Controller;
@@ -23,6 +23,7 @@ public class MainState extends State{
     
     private PolygonManager polygonManager;
     private LightManager lightManager;
+    private EntityManager entityManager;
     
     private Controller controller;
     
@@ -60,6 +61,14 @@ public class MainState extends State{
         lightManager = new LightManager(controller.getCamera());
         lightManager.addLightSource(0, 12, 2, .5);
         lightManager.update(polygonManager);
+        
+        entityManager = new EntityManager();
+        Entity e1 = new CubeEnemy((RectangularPrism)box, 1 ,1, 1);
+        entityManager.addEntity(e1);
+        
+        for(Entity e: entityManager.getEntities()){
+            polygonManager.addShape(e.getShape());
+        }
     }
     
     @Override
@@ -67,7 +76,7 @@ public class MainState extends State{
         controller.update();
         polygonManager.update(main.getWidth(), main.getHeight());
         lightManager.update(polygonManager);
-        
+        entityManager.update();
     }
 
     @Override

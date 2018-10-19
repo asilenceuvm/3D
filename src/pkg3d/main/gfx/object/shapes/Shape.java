@@ -1,6 +1,5 @@
 package pkg3d.main.gfx.object.shapes;
 
-import java.util.ArrayList;
 import pkg3d.main.gfx.Camera;
 import pkg3d.main.gfx.object.Plane;
 import pkg3d.main.gfx.object.PolygonObject;
@@ -22,6 +21,19 @@ public abstract class Shape {
         this.x = x;
         this.y = y;
         this.z = z;
+    }
+    
+    public void move(double deltaX, double deltaY, double deltaZ){
+        for(int i = 0; i < corners.length; i++){
+            corners[i][0] += deltaX;
+            corners[i][1] += deltaY;
+            corners[i][2] += deltaZ;
+        }
+        for(int i = 0; i < polys.length; i++){
+            polys[i].addX(deltaX);
+            polys[i].addY(deltaY);
+            polys[i].addZ(deltaZ);
+        }
     }
     
     public PolygonObject[] getPolys(){

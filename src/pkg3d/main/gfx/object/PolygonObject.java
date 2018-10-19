@@ -111,6 +111,33 @@ public class PolygonObject {
     public void setAvgDist(double avgDist){
         this.avgDist = avgDist;
     }
+    
+    public void setX(double[] x){
+        this.x = x;
+    }
+    public void setY(double[] y){
+        this.y = y;
+    }
+    public void setZ(double[] z){
+        this.z = z;
+    }
+    
+    public void addX(double delta){
+        for(int i = 0; i < x.length; i++){
+            x[i] += delta;
+        }
+    }
+    public void addY(double delta){
+        for(int i = 0; i < x.length; i++){
+            y[i] += delta;
+        }
+    }
+    public void addZ(double delta){
+        for(int i = 0; i < x.length; i++){
+            z[i] += delta;
+        }
+    }
+    
     public double[] getX(){
         return x;
     }
