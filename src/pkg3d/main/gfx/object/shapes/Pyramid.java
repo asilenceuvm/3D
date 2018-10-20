@@ -3,6 +3,7 @@ package pkg3d.main.gfx.object.shapes;
 import java.awt.Color;
 import java.util.ArrayList;
 import pkg3d.main.gfx.Camera;
+import pkg3d.main.gfx.object.PolygonManager;
 import pkg3d.main.gfx.object.PolygonObject;
 
 /**
@@ -11,8 +12,8 @@ import pkg3d.main.gfx.object.PolygonObject;
  */
 public class Pyramid extends Shape{
     
-    public Pyramid(Camera camera, double x, double y, double z, double baseLength, double height, Color c){
-        super(camera,x,y,z);
+    public Pyramid(PolygonManager polygonManager, Camera camera, double x, double y, double z, double baseLength, double height, Color c){
+        super(polygonManager,camera,x,y,z);
         
         polys = new PolygonObject[5];
         

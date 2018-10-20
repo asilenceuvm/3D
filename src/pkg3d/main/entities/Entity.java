@@ -1,6 +1,7 @@
 package pkg3d.main.entities;
 
 import java.awt.Graphics;
+import pkg3d.main.Main;
 import pkg3d.main.gfx.object.shapes.Shape;
 
 /**
@@ -9,12 +10,16 @@ import pkg3d.main.gfx.object.shapes.Shape;
  */
 public abstract class Entity {
     
+    protected Main main;
     protected Shape s;
     protected double x,y,z;
     protected double xBoundWidth, yBoundHeight, zBoundDepth;
     protected double xMove, yMove, zMove;
     
-    public Entity(Shape s, double x, double y , double z){
+    private boolean remove;
+    
+    public Entity(Main main, Shape s, double x, double y , double z){
+        this.main = main;
         this.s = s;
         this.x = x;
         this.y = y;
@@ -23,6 +28,14 @@ public abstract class Entity {
     
     public abstract void update();
     public abstract void render(Graphics g);
+    
+    public void checkRemove(int width, int height){
+        if(s.mouseOver(width, height)){
+            if(main.getMouseManager().getLeftPressed()){
+                remove = true;
+            }
+        }
+    }
     
     protected void move(double deltaX, double deltaY, double deltaZ){
         s.move(deltaX, deltaY, deltaZ);
@@ -37,5 +50,9 @@ public abstract class Entity {
     
     public Shape getShape(){
         return s;
+    }
+    
+    public boolean getRemove(){
+        return remove;
     }
 }

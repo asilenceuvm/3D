@@ -96,6 +96,10 @@ public class PolygonObject {
           //  lighting = 0.5; 
         //}
     }
+    
+    public boolean mouseOver(int width, int height) {
+        return polygon.contains(width / 2, height / 2);
+    }
 
     public void setLighting(double lighting){
         this.lighting = lighting;

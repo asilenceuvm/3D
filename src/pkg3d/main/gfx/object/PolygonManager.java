@@ -16,6 +16,7 @@ public class PolygonManager {
     private ArrayList<Shape> shapes = new ArrayList();
     private Camera camera;
     private int[] renderOrder;
+    private PolygonObject polygonOver;
     
     public PolygonManager(Camera camera){
         this.camera = camera;
@@ -34,6 +35,12 @@ public class PolygonManager {
             drawablePolygons.add(shape.getPolys()[i]);
         }
         shapes.add(shape);
+    }
+    
+    public void removeShape(Shape s){
+        for(PolygonObject p: s.getPolys()){
+            drawablePolygons.remove(p);
+        }
     }
     
     public void update(int width, int height){
@@ -97,6 +104,16 @@ public class PolygonManager {
               + (camera.getPosition()[1] - p.getY()[i]) * (camera.getPosition()[1] - p.getY()[i])
               + (camera.getPosition()[2] - p.getZ()[i]) * (camera.getPosition()[2] - p.getZ()[i]));
     }
+    /*
+    private void setPolygonOver(int width, int height) {
+        polygonOver = null;
+        for (int i = renderOrder.length - 1; i >= 0; i--) {
+            if (drawablePolygons.get(renderOrder[i]).mouseOver(width, height)) {
+                polygonOver = drawablePolygons.get(renderOrder[i]).DrawablePolygon;
+                break;
+            }
+        }
+    }*/
     
     public ArrayList getDrawablePolygons(){
         return drawablePolygons;

@@ -1,6 +1,7 @@
 package pkg3d.main.entities;
 
 import java.awt.Graphics;
+import pkg3d.main.Main;
 import pkg3d.main.gfx.object.shapes.RectangularPrism;
 /**
  *
@@ -8,13 +9,14 @@ import pkg3d.main.gfx.object.shapes.RectangularPrism;
  */
 public class CubeEnemy extends Entity{
     
-    public CubeEnemy(RectangularPrism rp, double x, double y, double z){
-        super(rp, x, y, z);
+    public CubeEnemy(Main main, RectangularPrism rp, double x, double y, double z){
+        super(main, rp, x, y, z);
     }
 
     @Override
     public void update() {
         move(.01,0,0);
+        checkRemove(main.getWidth(), main.getHeight());
     }
 
     @Override

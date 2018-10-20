@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 import pkg3d.main.gfx.Camera;
 import pkg3d.main.gfx.object.Plane;
+import pkg3d.main.gfx.object.PolygonManager;
 import pkg3d.main.gfx.object.PolygonObject;
 
 /**
@@ -13,8 +14,8 @@ import pkg3d.main.gfx.object.PolygonObject;
 public class RectangularPrism extends Shape{
     
     
-    public RectangularPrism(Camera camera, double x, double y, double z, double xSideLength, double ySideLength, double zSideLength, Color c){
-        super(camera,x,y,z);
+    public RectangularPrism(PolygonManager polygonManager, Camera camera, double x, double y, double z, double xSideLength, double ySideLength, double zSideLength, Color c){
+        super(polygonManager, camera,x,y,z);
         
         corners = new double[8][3];
         

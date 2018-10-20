@@ -2,6 +2,8 @@ package pkg3d.main.entities;
 
 import java.awt.Graphics;
 import java.util.ArrayList;
+import java.util.Iterator;
+import pkg3d.main.gfx.object.PolygonManager;
 
 /**
  *
@@ -19,9 +21,30 @@ public class EntityManager {
         entities.add(e);
     }
     
-    public void update(){
+    public void removeEntity(Entity e, PolygonManager p){
+        //p.removeShape(e.getShape());
+        //entities.remove(e);
+        Iterator<Entity> ei = entities.iterator();
+        while (ei.hasNext()) {
+            Entity e2 = ei.next();
+            if(e2 == e){
+                p.removeShape(e2.getShape());
+                ei.remove();
+            }
+        }
+    }
+    
+    public void update(PolygonManager p){
         for(Entity e: entities){
             e.update();
+        }
+        Iterator<Entity> ei = entities.iterator();
+        while (ei.hasNext()) {
+            Entity e2 = ei.next();
+            if(e2.getRemove()){
+                p.removeShape(e2.getShape());
+                ei.remove();
+            }
         }
     }
     

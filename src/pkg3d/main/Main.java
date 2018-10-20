@@ -50,6 +50,8 @@ public class Main extends Loop{
         display.getCanvas().addKeyListener(keyManager);
         
         mouseManager = new MouseManager(width, height);
+        display.getFrame().addMouseListener(mouseManager);
+        display.getCanvas().addMouseListener(mouseManager);
         display.getFrame().addMouseMotionListener(mouseManager);
         display.getCanvas().addMouseMotionListener(mouseManager);
         

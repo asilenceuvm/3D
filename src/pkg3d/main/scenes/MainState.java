@@ -2,6 +2,7 @@ package pkg3d.main.scenes;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.Iterator;
 import pkg3d.main.Main;
 import pkg3d.main.entities.CubeEnemy;
 import pkg3d.main.entities.Entity;
@@ -28,7 +29,7 @@ public class MainState extends State{
     private Controller controller;
     
     private Shape cube, cube2, cube3;
-    private Shape box;
+    private Shape box, box2;
     private Shape pyramid;
     
     public MainState(Main main){
@@ -38,10 +39,11 @@ public class MainState extends State{
         
         polygonManager = new PolygonManager(controller.getCamera());
         
-        cube = new RectangularPrism(controller.getCamera(), 0, 0, 0, 4,4,4, Color.lightGray);
-        cube2 = new RectangularPrism(controller.getCamera(), -18, -16, -18, 36,4,36, Color.cyan);
-        cube3 = new RectangularPrism(controller.getCamera(), -4, -4, -26, 36,36,4, Color.cyan);
-        box = new RectangularPrism(controller.getCamera(),0, -8, 2, 1, 1, 1, Color.white);
+        cube = new RectangularPrism(polygonManager, controller.getCamera(), 0, 0, 0, 4,4,4, Color.lightGray);
+        cube2 = new RectangularPrism(polygonManager, controller.getCamera(), -18, -28, -18, 36,4,36, Color.cyan);
+        cube3 = new RectangularPrism(polygonManager, controller.getCamera(), -4, -4, -26, 36,36,4, Color.cyan);
+        box = new RectangularPrism(polygonManager, controller.getCamera(),0, -8, 2, 1, 1, 1, Color.white);
+        box2 = new RectangularPrism(polygonManager, controller.getCamera(),3, -8, 2, 2, 2, 2, Color.white);
         //pyramid = new Pyramid(controller.getCamera(), 4, 4, 4.1, 4,4, Color.lightGray);
         
         polygonManager.addShape(cube);
@@ -63,8 +65,11 @@ public class MainState extends State{
         lightManager.update(polygonManager);
         
         entityManager = new EntityManager();
-        Entity e1 = new CubeEnemy((RectangularPrism)box, 1 ,1, 1);
+        
+        Entity e1 = new CubeEnemy(main, (RectangularPrism)box, 1 ,1, 1);
         entityManager.addEntity(e1);
+        Entity e2 = new CubeEnemy(main, (RectangularPrism)box2, 1 ,1, 1);
+        entityManager.addEntity(e2);
         
         for(Entity e: entityManager.getEntities()){
             polygonManager.addShape(e.getShape());
@@ -76,12 +81,13 @@ public class MainState extends State{
         controller.update();
         polygonManager.update(main.getWidth(), main.getHeight());
         lightManager.update(polygonManager);
-        entityManager.update();
+        entityManager.update(polygonManager);
     }
 
     @Override
     public void render(Graphics g) {
         polygonManager.render(g);
+        controller.render(g);
     }
     
 }
