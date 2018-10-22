@@ -3,6 +3,7 @@ package pkg3d.main.gfx.object;
 import pkg3d.main.gfx.object.shapes.Shape;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import pkg3d.main.gfx.Camera;
 
@@ -22,8 +23,8 @@ public class PolygonManager {
         this.camera = camera;
     }
     
-    public void addPolygon(double[] x, double[] y, double[] z, Color color){
-        drawablePolygons.add(new PolygonObject(camera, x, y, z, color));
+    public void addPolygon(double[] x, double[] y, double[] z, BufferedImage texture){
+        drawablePolygons.add(new PolygonObject(camera, x, y, z, texture));
     }
     
     public void addPolygon(PolygonObject p){

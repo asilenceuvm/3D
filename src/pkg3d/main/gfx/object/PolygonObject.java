@@ -3,6 +3,7 @@ package pkg3d.main.gfx.object;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Polygon;
+import java.awt.image.BufferedImage;
 import pkg3d.main.gfx.Camera;
 
 /**
@@ -12,11 +13,11 @@ import pkg3d.main.gfx.Camera;
 public class PolygonObject {
     
     private Polygon polygon;
-    private Color color;
+    private BufferedImage texture;
     private int vertecies;
     private Camera camera;
     
-    private boolean outlines=false;
+    private boolean outlines=true;
     private boolean rendering=true;
     
     private double avgDist;
@@ -25,12 +26,12 @@ public class PolygonObject {
     private double lighting = 1;
     private boolean opaque = true;
     
-    public PolygonObject(Camera camera, double[] x, double[] y, double[] z, Color color){
+    public PolygonObject(Camera camera, double[] x, double[] y, double[] z, BufferedImage texture){
         this.camera = camera;
         this.x = x;
         this.y = y;
         this.z = z;
-        this.color = color;
+        this.texture = texture;
         
         polygon = new Polygon();
         vertecies = x.length;
@@ -69,12 +70,12 @@ public class PolygonObject {
                 g.setColor(Color.BLACK);
                 g.drawPolygon(polygon);
             }
-            if(opaque){
-                g.setColor(new Color((int)(color.getRed() * lighting), (int)(color.getBlue() * lighting), (int)(color.getGreen() * lighting)));
-            } else {
-                g.setColor(color);
-            }
-            g.fillPolygon(polygon);
+            g.setClip(polygon);
+            //g.drawImage(texture, polygon.xpoints[0], polygon.ypoints[0], polygon.xpoints[2] - polygon.xpoints[0], polygon.ypoints[2] - polygon.ypoints[0], null);
+            //g.drawImage(texture, polygon.xpoints[0], polygon.ypoints[0], null);
+            //g.drawImage(texture, 0, 0, null);
+            g.drawImage(texture, polygon.getBounds().x, polygon.getBounds().y,polygon.getBounds().width,polygon.getBounds().height, null);
+            g.setClip(null);
         }
     }
     

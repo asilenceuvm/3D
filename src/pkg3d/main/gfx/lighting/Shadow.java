@@ -14,16 +14,16 @@ public class Shadow {
     private PolygonObject shadow;
     
     public Shadow(Camera camera, double[] x, double[] y, double[] z){
-        shadow = new PolygonObject(camera, x, y, z, new Color(.2f,.3f,.4f,.4f));
-        shadow.setOpaque(false);
+        //shadow = new PolygonObject(camera, x, y, z, new Color(.2f,.3f,.4f,.4f));
+        //shadow.setOpaque(false);
     }
     
     public PolygonObject getShadow(){
-        return shadow;
+        return null;
     }
     
     public void render(Graphics g){
-        shadow.render(g);
+        //shadow.render(g);
     }
     
 }

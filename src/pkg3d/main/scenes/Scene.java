@@ -7,6 +7,7 @@ import pkg3d.main.Main;
 import pkg3d.main.entities.CubeEnemy;
 import pkg3d.main.entities.Entity;
 import pkg3d.main.entities.EntityManager;
+import pkg3d.main.gfx.ImageLoader;
 import pkg3d.main.gfx.lighting.LightManager;
 import pkg3d.main.gfx.object.PolygonManager;
 import pkg3d.main.gfx.object.PolygonObject;
@@ -37,13 +38,8 @@ public class Scene {
         
         polygonManager = new PolygonManager(controller.getCamera());
         
-        box = new RectangularPrism(polygonManager, controller.getCamera(),0, -8, 2, 1, 1, 1, Color.white);
-        box2 = new RectangularPrism(polygonManager, controller.getCamera(),3, -8, 2, 2, 2, 2, Color.white);
-        
-        PolygonObject p = new PolygonObject(controller.getCamera(), new double[]{5,5,9,9}, new double[]{5, 9, 9, 5}, 
-                new double[]{5,5,0,0},  new Color(.2f,.3f,.4f,.4f));
-        p.setOpaque(false);
-        //polygonManager.addPolygon(p);
+        box = new RectangularPrism(polygonManager, controller.getCamera(),0, -8, 2, 1, 1, 1, ImageLoader.loadImage("texture1.png"));
+        box2 = new RectangularPrism(polygonManager, controller.getCamera(),3, -8, 2, 2, 2, 2, ImageLoader.loadImage("texture1.png"));
         
         lightManager = new LightManager(controller.getCamera());
         lightManager.addLightSource(0, 12, 2, .5);
