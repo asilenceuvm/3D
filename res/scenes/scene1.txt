@@ -1,0 +1,8 @@
+RP 0 0 0 4 4 4 Color.lightGray
+RP -18 -28 -18 36 4 36 Color.cyan
+RP -4 -4 -26 36 36 4 Color.cyan
+RP -24 16 0 16 16 0 Color.red
+RP -24 0 0 16 16 0 Color.red
+RP -14 0 0 16 16 0 Color.red
+RP 0 -8 2 1 1 1 Color.white
+RP 3 -8 2 2 2 2 Color.white

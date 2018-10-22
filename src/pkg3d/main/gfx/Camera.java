@@ -1,6 +1,8 @@
 package pkg3d.main.gfx;
 
+import pkg3d.main.Main;
 import pkg3d.main.gfx.object.Plane;
+import pkg3d.main.gfx.object.PolygonManager;
 import pkg3d.main.input.MouseManager;
 
 /**
@@ -9,11 +11,9 @@ import pkg3d.main.input.MouseManager;
  */
 public class Camera {
     
+    private Main main;
     private MouseManager mouseManager;
     private Utils utils;
-    
-    private int width,height;
-    
     
     private double[] position;
     private double[] viewPosition;
@@ -31,12 +31,13 @@ public class Camera {
     private double[] calcFocusPos;
 
     private double t;
-
-    public Camera(double[] position, double[] viewPosition, int width, int height, MouseManager mouseManager) {
+    
+    private boolean debugMode;
+    
+    public Camera(Main main, double[] position, double[] viewPosition, MouseManager mouseManager) {
+        this.main = main;
         this.position = position;
         this.viewPosition = viewPosition;
-        this.width = width;
-        this.height = height;
         
         this.mouseManager = mouseManager;
         utils = new Utils();
@@ -48,31 +49,53 @@ public class Camera {
         double deltaX = 0, deltaY = 0, deltaZ = 0;
         Vector verticalVector = new Vector(0, 0, 1);
         Vector horizontalVector = Vector.crossProduct(newViewVector, verticalVector);
-        //Vector horizontalVector = new Vector(0,0,0);
-        if (keys[0]) {
-            deltaX += newViewVector.getX();
-            deltaY += newViewVector.getY();
-            deltaZ += newViewVector.getZ();
-        }
-
-        if (keys[2]) {
-            deltaX -= newViewVector.getX();
-            deltaY -= newViewVector.getY();
-            deltaZ -= newViewVector.getZ();
-        }
-
-        if (keys[1]) {
-            deltaX += horizontalVector.getX();
-            deltaY += horizontalVector.getY();
-            deltaZ += horizontalVector.getZ();
-        }
-
-        if (keys[3]) {
-            deltaX -= horizontalVector.getX();
-            deltaY -= horizontalVector.getY();
-            deltaZ -= horizontalVector.getZ();
-        }
         
+        if(debugMode){
+            if (keys[0]) {
+                deltaX += newViewVector.getX();
+                deltaY += newViewVector.getY();
+                deltaZ += newViewVector.getZ();
+            }
+
+            if (keys[2]) {
+                deltaX -= newViewVector.getX();
+                deltaY -= newViewVector.getY();
+                deltaZ -= newViewVector.getZ();
+            }
+
+            if (keys[1]) {
+                deltaX += horizontalVector.getX();
+                deltaY += horizontalVector.getY();
+                deltaZ += horizontalVector.getZ();
+            }
+
+            if (keys[3]) {
+                deltaX -= horizontalVector.getX();
+                deltaY -= horizontalVector.getY();
+                deltaZ -= horizontalVector.getZ();
+            }
+        } else {
+            if (keys[0]) {
+                deltaX += newViewVector.getX();
+                deltaY += newViewVector.getY();
+            }
+
+            if (keys[2]) {
+                deltaX -= newViewVector.getX();
+                deltaY -= newViewVector.getY();
+            }
+
+            if (keys[1]) {
+                deltaX += horizontalVector.getX();
+                deltaY += horizontalVector.getY();
+            }
+
+            if (keys[3]) {
+                deltaX -= horizontalVector.getX();
+                deltaY -= horizontalVector.getY();
+            }
+            
+        }
         Vector moveVector = new Vector(deltaX, deltaY, deltaZ);
         moveTo(position[0] + moveVector.getX() * speed, position[1] + moveVector.getY() * speed, position[2] + moveVector.getZ() * speed);
     }
@@ -90,7 +113,7 @@ public class Camera {
             verticalLook = -0.999;
         }
         updateView();
-        utils.centerMouse(width, height);
+        utils.centerMouse(main.getWidth(), main.getHeight());
     }
 
     private void moveTo(double x, double y, double z) {
@@ -170,7 +193,9 @@ public class Camera {
         //9 and 38 account for the mouse size vs the actual half point on the screen
     }
     
-    
+    public void setDegbugMode(boolean debugMode){
+        this.debugMode = debugMode;
+    }
     
     public double[] getPosition() {
         return position;

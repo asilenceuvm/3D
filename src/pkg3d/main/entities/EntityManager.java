@@ -22,8 +22,6 @@ public class EntityManager {
     }
     
     public void removeEntity(Entity e, PolygonManager p){
-        //p.removeShape(e.getShape());
-        //entities.remove(e);
         Iterator<Entity> ei = entities.iterator();
         while (ei.hasNext()) {
             Entity e2 = ei.next();

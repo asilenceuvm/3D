@@ -1,4 +1,4 @@
-package pkg3d.main.scenes;
+package pkg3d.main.states;
 
 import java.awt.Graphics;
 

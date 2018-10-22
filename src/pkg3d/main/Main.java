@@ -12,8 +12,8 @@ import java.awt.image.BufferedImage;
 import pkg3d.main.gfx.Display;
 import pkg3d.main.input.KeyManager;
 import pkg3d.main.input.MouseManager;
-import pkg3d.main.scenes.MainState;
-import pkg3d.main.scenes.State;
+import pkg3d.main.states.MainState;
+import pkg3d.main.states.State;
 
 /**
  *
@@ -96,6 +96,10 @@ public class Main extends Loop{
         BufferedImage cursorImage = new BufferedImage(1, 1, BufferedImage.TRANSLUCENT);
         Cursor invisibleCursor = toolkit.createCustomCursor(cursorImage, new Point(0, 0), "InvisibleCursor");
         display.getFrame().setCursor(invisibleCursor);
+    }
+    
+    public State getState(){
+        return State.getCurState();
     }
     
     public KeyManager getKeyManager(){

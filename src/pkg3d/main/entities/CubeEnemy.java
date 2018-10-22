@@ -1,6 +1,7 @@
 package pkg3d.main.entities;
 
 import java.awt.Graphics;
+import java.util.Random;
 import pkg3d.main.Main;
 import pkg3d.main.gfx.object.shapes.RectangularPrism;
 /**
@@ -9,13 +10,19 @@ import pkg3d.main.gfx.object.shapes.RectangularPrism;
  */
 public class CubeEnemy extends Entity{
     
-    public CubeEnemy(Main main, RectangularPrism rp, double x, double y, double z){
-        super(main, rp, x, y, z);
+    private double xChange, yChange;
+    private Random rand;
+    
+    public CubeEnemy(Main main, RectangularPrism rp){
+        super(main, rp);
+        rand = new Random();
+        xChange = rand.nextDouble()/20;
+        yChange = rand.nextDouble()/20;
     }
 
     @Override
     public void update() {
-        move(.01,0,0);
+        move(xChange,0,yChange);
         checkRemove(main.getWidth(), main.getHeight());
     }
 

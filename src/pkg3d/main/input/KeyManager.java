@@ -10,6 +10,7 @@ import java.awt.event.KeyListener;
 public class KeyManager implements KeyListener{
     
     private boolean wPressed, aPressed, sPressed, dPressed;
+    private boolean oPressed;
     
     @Override
     public void keyTyped(KeyEvent ke) {
@@ -29,6 +30,9 @@ public class KeyManager implements KeyListener{
         }
         if(ke.getKeyCode() == KeyEvent.VK_D){
             dPressed = true;
+        }
+        if(ke.getKeyCode() == KeyEvent.VK_O){
+            oPressed = !oPressed;
         }
         
         //temp
@@ -64,5 +68,8 @@ public class KeyManager implements KeyListener{
     }
     public boolean getDPressed(){
         return dPressed;
+    }
+    public boolean getOPressed(){
+        return oPressed;
     }
 }

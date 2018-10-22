@@ -16,7 +16,7 @@ public class PolygonObject {
     private int vertecies;
     private Camera camera;
     
-    private boolean outlines=true;
+    private boolean outlines=false;
     private boolean rendering=true;
     
     private double avgDist;
