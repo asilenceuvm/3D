@@ -10,14 +10,13 @@ import pkg3d.main.entities.EntityManager;
 import pkg3d.main.gfx.ImageLoader;
 import pkg3d.main.gfx.lighting.LightManager;
 import pkg3d.main.gfx.object.PolygonManager;
-import pkg3d.main.gfx.object.PolygonObject;
 import pkg3d.main.gfx.object.shapes.RectangularPrism;
 import pkg3d.main.gfx.object.shapes.Shape;
 import pkg3d.main.input.Controller;
 
 /**
- *
  * @author asile
+ * handles the main game enviornment
  */
 public class Scene {
     
@@ -29,8 +28,11 @@ public class Scene {
     
     private Controller controller;
     
+    //temp
     private Shape box, box2;
     
+    //most of this stuff should be loaded in the scene file
+    //will be changed later
     public Scene(Main main){
         this.main = main;
         
@@ -41,10 +43,12 @@ public class Scene {
         box = new RectangularPrism(polygonManager, controller.getCamera(),0, -8, 2, 1, 1, 1, ImageLoader.loadImage("texture1.png"));
         box2 = new RectangularPrism(polygonManager, controller.getCamera(),3, -8, 2, 2, 2, 2, ImageLoader.loadImage("texture1.png"));
         
+        //lighting
         lightManager = new LightManager(controller.getCamera());
         lightManager.addLightSource(0, 12, 2, .5);
         lightManager.update(polygonManager);
         
+        //entities
         entityManager = new EntityManager();
         
         Entity e1 = new CubeEnemy(main, (RectangularPrism)box);
@@ -55,6 +59,8 @@ public class Scene {
         for(Entity e: entityManager.getEntities()){
             polygonManager.addShape(e.getShape());
         }
+        
+        //load scene from file
         SceneLoader sceneLoader = new SceneLoader();
         ArrayList<Shape> shapes = sceneLoader.loadFile(polygonManager, controller.getCamera());
         for(Shape s: shapes){
@@ -62,6 +68,7 @@ public class Scene {
         }
     }
     
+    //updates in game logic
     public void update(){
         controller.update();
         polygonManager.update(main.getWidth(), main.getHeight());
@@ -71,7 +78,13 @@ public class Scene {
     
     
     public void render(Graphics g){
-        polygonManager.render(g);
+        //background color
+        g.clipRect(0, 0, main.getWidth(), main.getHeight());
+        g.setColor(new Color(140, 180, 180));
+        g.fillRect(0, 0, main.getWidth(), main.getHeight());
+        //draws all polygons
+        polygonManager.render(g, main.getWidth(), main.getHeight());
+        //draws crosshair
         controller.render(g);
     }
     

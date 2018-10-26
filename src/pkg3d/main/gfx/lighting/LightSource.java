@@ -6,8 +6,8 @@ import pkg3d.main.gfx.Vector;
 import pkg3d.main.gfx.object.shapes.Shape;
 
 /**
- *
  * @author asile
+ * work in progress class to give objects light
  */
 public class LightSource {
     
@@ -21,6 +21,7 @@ public class LightSource {
         this.brightness = brightness;
     }
     
+    //returns all the vectors from the source to the corners of a shape
     public Vector[] getRays(Shape shape){
         Vector[] rays = new Vector[shape.getCorners().length];
         for(int i = 0; i < rays.length; i++){
@@ -29,6 +30,7 @@ public class LightSource {
         return rays;
     }
     
+    //getters & setters
     public double getX(){
         return x;
     }

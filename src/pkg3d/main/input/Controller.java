@@ -6,8 +6,8 @@ import pkg3d.main.gfx.Camera;
 import pkg3d.main.gfx.Utils;
 
 /**
- *
  * @author asile
+ * class to handle higher level user input
  */
 public class Controller {
     
@@ -21,6 +21,7 @@ public class Controller {
         camera = new Camera(main, new double[]{-15, 10, 15}, new double[]{-5, -3, 0}, main.getMouseManager());
     }
     
+    //updates movement
     public void update(){
         boolean[] keys = new boolean[4];
         if (main.getKeyManager().getWPressed()) {
@@ -51,15 +52,18 @@ public class Controller {
         
         camera.move(keys, .5);
         
-
+        //temp code
         camera.setDegbugMode(main.getKeyManager().getOPressed());
+        
         camera.update();
     }
     
+    //draws cross hair
     public void render(Graphics g){
         utils.drawMouseAim(g, main.getWidth(), main.getHeight(), 4);
     }
     
+    //getters & setters
     public Camera getCamera(){
         return camera;
     }

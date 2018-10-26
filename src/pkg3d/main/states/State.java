@@ -3,8 +3,9 @@ package pkg3d.main.states;
 import java.awt.Graphics;
 
 /**
- *
  * @author asile
+ * state system for the game
+ * eg. main state, main menu state , etc.
  */
 public abstract class State {
     

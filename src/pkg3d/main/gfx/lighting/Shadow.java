@@ -1,13 +1,13 @@
 package pkg3d.main.gfx.lighting;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import pkg3d.main.gfx.Camera;
 import pkg3d.main.gfx.object.PolygonObject;
 
 /**
- *
  * @author asile
+ * Just a class outline for now
+ * planned to make a semi transparent polygon for a shadow
  */
 public class Shadow {
     

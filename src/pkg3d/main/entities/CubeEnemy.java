@@ -4,9 +4,10 @@ import java.awt.Graphics;
 import java.util.Random;
 import pkg3d.main.Main;
 import pkg3d.main.gfx.object.shapes.RectangularPrism;
+
 /**
- *
  * @author asile
+ * basic enemy for testing purposes
  */
 public class CubeEnemy extends Entity{
     
@@ -16,6 +17,7 @@ public class CubeEnemy extends Entity{
     public CubeEnemy(Main main, RectangularPrism rp){
         super(main, rp);
         rand = new Random();
+        //gives it a random direction to move
         xChange = rand.nextDouble()/20;
         yChange = rand.nextDouble()/20;
     }

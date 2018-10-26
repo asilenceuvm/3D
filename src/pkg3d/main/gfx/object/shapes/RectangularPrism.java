@@ -1,16 +1,14 @@
 package pkg3d.main.gfx.object.shapes;
 
-import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import pkg3d.main.gfx.Camera;
 import pkg3d.main.gfx.object.Plane;
 import pkg3d.main.gfx.object.PolygonManager;
 import pkg3d.main.gfx.object.PolygonObject;
 
 /**
- *
  * @author asile
+ * main building block and only currently functioning shape
  */
 public class RectangularPrism extends Shape{
     
@@ -31,6 +29,8 @@ public class RectangularPrism extends Shape{
         corners[6] = new double[]{x + xSideLength, y + ySideLength, z + zSideLength};
         corners[7] = new double[]{x, y + ySideLength, z + zSideLength};
         
+        
+        //inefficent but I couldn't think of a better way
         polys = new PolygonObject[6];
         
         polys[0] = new PolygonObject(camera, new double[]{corners[0][0], corners[1][0], corners[2][0], corners[3][0]},

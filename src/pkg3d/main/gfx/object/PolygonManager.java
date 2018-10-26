@@ -1,36 +1,40 @@
 package pkg3d.main.gfx.object;
 
 import pkg3d.main.gfx.object.shapes.Shape;
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import pkg3d.main.gfx.Camera;
 
 /**
- *
  * @author asile
+ * Manages updating and rendering every polygon object
  */
 public class PolygonManager {
     
+    private Camera camera;
+    
     private ArrayList<PolygonObject> drawablePolygons = new ArrayList();
     private ArrayList<Shape> shapes = new ArrayList();
-    private Camera camera;
-    private int[] renderOrder;
+    
+    private int[] renderOrder; //order to draw polygons
     private PolygonObject polygonOver;
     
     public PolygonManager(Camera camera){
         this.camera = camera;
     }
     
+    //creates a polygon given arrays of points and adds it to the array list
     public void addPolygon(double[] x, double[] y, double[] z, BufferedImage texture){
         drawablePolygons.add(new PolygonObject(camera, x, y, z, texture));
     }
     
+    //adds a pre-existing polygon to the arraylist
     public void addPolygon(PolygonObject p){
         drawablePolygons.add(p);
     }
     
+    //adds a shape  by adding each polygon object in it
     public void addShape(Shape shape){
         for(int i = 0; i < shape.getPolys().length; i++){
             drawablePolygons.add(shape.getPolys()[i]);
@@ -38,6 +42,7 @@ public class PolygonManager {
         shapes.add(shape);
     }
     
+    //removes the shape from the array
     public void removeShape(Shape s){
         for(PolygonObject p: s.getPolys()){
             drawablePolygons.remove(p);
@@ -51,10 +56,10 @@ public class PolygonManager {
         }
     }
     
-    public void render(Graphics g){
+    public void render(Graphics g, int width, int height){
         setOrder();
         for(int i = 0; i < drawablePolygons.size(); i++){
-            drawablePolygons.get(renderOrder[i]).render(g);
+            drawablePolygons.get(renderOrder[i]).render(g, width, height);
         }
     }
     
@@ -64,6 +69,7 @@ public class PolygonManager {
         }
     }
     
+    //sets the order that the polygons should be rendered
     private void setOrder(){
         double[] k = new double[drawablePolygons.size()];
         renderOrder = new int[drawablePolygons.size()];
@@ -90,6 +96,7 @@ public class PolygonManager {
         }
     }
     
+    //gets the distance to a polygon object from the camera
     private double getDist(PolygonObject p) {
         double total = 0;
         for (int i = 0; i < p.getX().length; i++) {
@@ -98,13 +105,16 @@ public class PolygonManager {
         
         return total / p.getX().length;
     }
-
+    
+    //helper method to getDist
     private double getDistanceToP(int i, PolygonObject p) {
         return Math.sqrt(
                 (camera.getPosition()[0] - p.getX()[i]) * (camera.getPosition()[0] - p.getX()[i])
               + (camera.getPosition()[1] - p.getY()[i]) * (camera.getPosition()[1] - p.getY()[i])
               + (camera.getPosition()[2] - p.getZ()[i]) * (camera.getPosition()[2] - p.getZ()[i]));
     }
+    
+    //currently unused method
     /*
     private void setPolygonOver(int width, int height) {
         polygonOver = null;
@@ -116,6 +126,7 @@ public class PolygonManager {
         }
     }*/
     
+    //getters
     public ArrayList getDrawablePolygons(){
         return drawablePolygons;
     }

@@ -3,13 +3,12 @@ package pkg3d.main.gfx.lighting;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import pkg3d.main.gfx.Camera;
-import pkg3d.main.gfx.object.Plane;
 import pkg3d.main.gfx.object.PolygonManager;
-import pkg3d.main.gfx.object.shapes.Shape;
 
 /**
- *
  * @author asile
+ * handles the lighting effects
+ * not a current priority
  */
 public class LightManager {
     
@@ -29,6 +28,7 @@ public class LightManager {
         lightSources.add(new LightSource(x, y, z, brightness));
     }
     /*
+    old method that doesn't work
     public void update(PolygonManager polygonManager){
         for(int i = 0; i < lightSources.size(); i++){
             polygonManager.calcLighting(lightSources.get(i).getX(), lightSources.get(i).getY(), lightSources.get(i).getZ());
@@ -58,6 +58,8 @@ public class LightManager {
         
     }
     */
+    
+    //calculates general lighting
     public void update(PolygonManager polygonManager){
         for(int i = 0; i < lightSources.size(); i++){
             polygonManager.calcLighting(lightSources.get(i).getX(), lightSources.get(i).getY(), lightSources.get(i).getZ());

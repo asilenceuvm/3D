@@ -4,8 +4,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 /**
- *
  * @author asile
+ * handles basic key input
  */
 public class KeyManager implements KeyListener{
     
@@ -35,7 +35,7 @@ public class KeyManager implements KeyListener{
             oPressed = !oPressed;
         }
         
-        //temp
+        //temp to get out of enviornment
         if(ke.getKeyCode() == KeyEvent.VK_ESCAPE){
             System.exit(0);
         }
@@ -57,6 +57,8 @@ public class KeyManager implements KeyListener{
         }
     }
     
+    
+    //getters
     public boolean getWPressed(){
         return wPressed;
     }

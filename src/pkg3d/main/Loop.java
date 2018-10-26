@@ -1,8 +1,8 @@
 package pkg3d.main;
 
 /**
- *
  * @author Alex
+ * Main game loop, uses some logic to skips frames if there is bad performance
  */
 public abstract class Loop {
     

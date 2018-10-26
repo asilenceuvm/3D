@@ -6,8 +6,8 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 /**
- *
  * @author asile
+ * quick class that loads images
  */
 public class ImageLoader {
     

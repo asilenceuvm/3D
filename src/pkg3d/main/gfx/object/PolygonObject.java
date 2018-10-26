@@ -2,20 +2,24 @@ package pkg3d.main.gfx.object;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Polygon;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import pkg3d.main.gfx.Camera;
 
 /**
- *
  * @author asile
+ * Backbone of everything drawn in game
+ * uses javas built in polygon object to draw to the screen
  */
 public class PolygonObject {
+    
+    private Camera camera;
     
     private Polygon polygon;
     private BufferedImage texture;
     private int vertecies;
-    private Camera camera;
     
     private boolean outlines=true;
     private boolean rendering=true;
@@ -24,7 +28,6 @@ public class PolygonObject {
     private double[] x, y, z;
     
     private double lighting = 1;
-    private boolean opaque = true;
     
     public PolygonObject(Camera camera, double[] x, double[] y, double[] z, BufferedImage texture){
         this.camera = camera;
@@ -42,6 +45,7 @@ public class PolygonObject {
         
     }
     
+    //re-calculates where the polygon should be drawn 
     public void update(int width, int height){
         double[] x = new double[vertecies];
         double[] y = new double[vertecies];
@@ -52,10 +56,13 @@ public class PolygonObject {
             calcPos = camera.calculatePositionP(this.x[i], this.y[i], z[i]);
             x[i] = (width / 2 - camera.getFocusPos()[0]) + calcPos[0] * camera.getZoom();
             y[i] = (height / 2 - camera.getFocusPos()[1]) + calcPos[1] * camera.getZoom();
-            if (camera.getT() < 0) {
+            
+            if (camera.getT() < 0) { //distance to polygon is negative therefore behind the camera
                 rendering = false;
             }
         }
+        
+        //re-draw polygon
         polygon.reset();
         for(int i = 0; i < vertecies; i++){
             polygon.xpoints[i] = (int) x[i];
@@ -64,21 +71,32 @@ public class PolygonObject {
         }
     }
     
-    public void render(Graphics g){
+    public void render(Graphics g, int width, int height){
         if (rendering) {
             if (outlines) {
                 g.setColor(Color.BLACK);
                 g.drawPolygon(polygon);
             }
+            
+            //to be worked on, code for correctly rendering the polygon
             g.setClip(polygon);
-            //g.drawImage(texture, polygon.xpoints[0], polygon.ypoints[0], polygon.xpoints[2] - polygon.xpoints[0], polygon.ypoints[2] - polygon.ypoints[0], null);
-            //g.drawImage(texture, polygon.xpoints[0], polygon.ypoints[0], null);
-            //g.drawImage(texture, 0, 0, null);
+            Graphics2D g2d = (Graphics2D) g;
+            AffineTransform backup = g2d.getTransform();
+            double angle = (Math.atan2(polygon.ypoints[1] - polygon.ypoints[0], polygon.xpoints[1] - polygon.xpoints[0]));
+            AffineTransform a = AffineTransform.getRotateInstance(0, 0, 0);
+            g2d.setTransform(a);
             g.drawImage(texture, polygon.getBounds().x, polygon.getBounds().y,polygon.getBounds().width,polygon.getBounds().height, null);
+            //g.drawImage(texture,0,0,polygon.getBounds().width,polygon.getBounds().height, null);
+            //g.setColor(new Color(.2f,.2f,.2f, (float)lighting));
+            //g.fillPolygon(polygon);
+            g2d.setTransform(backup);
             g.setClip(null);
+            
+            
         }
     }
     
+    //calculates the lighting on the polygon
     public void calcLighting(double x, double y, double z) {
         Plane lightingPlane = new Plane(this);
         double angle = Math.acos(((lightingPlane.getNewVector().getX() * x)
@@ -93,23 +111,14 @@ public class PolygonObject {
         if (lighting < 0.3) {
             lighting = 0.3;
         }
-        //if(Double.isNaN(angle)){
-          //  lighting = 0.5; 
-        //}
     }
     
+    //determines if the polygon is in the center of the screen
     public boolean mouseOver(int width, int height) {
         return polygon.contains(width / 2, height / 2);
     }
-
-    public void setLighting(double lighting){
-        this.lighting = lighting;
-    }
-    public void setOpaque(boolean opaque){
-        this.opaque = opaque;
-    }
     
-    //getters
+    //getters & setters
     public double getAvgDist(){
         return avgDist;
     }
@@ -151,5 +160,9 @@ public class PolygonObject {
     }
     public double[] getZ(){
         return z;
+    }
+    
+    public void setLighting(double lighting){
+        this.lighting = lighting;
     }
 }

@@ -3,13 +3,14 @@ package pkg3d.main.gfx.object;
 import pkg3d.main.gfx.Vector;
 
 /**
- *
  * @author asile
+ * Mathematical plane object
  */
 public class Plane {
     private Vector vector1, vector2, newVector;
     private double[] points = new double[3];
-
+    
+    //creates a plane using a polygon object
     public Plane(PolygonObject p) {
         points[0] = p.getX()[0];
         points[1] = p.getY()[0];
@@ -25,14 +26,16 @@ public class Plane {
 
         newVector = Vector.crossProduct(vector1, vector2);
     }
-
+    
+    //creates a plane given two vectors and an array of points
     public Plane(Vector V1, Vector V2, double[] points) {
         this.points = points;
         this.vector1 = V1;
         this.vector2 = V2;
         newVector = Vector.crossProduct(V1, V2);
     }
-    
+   
+    //getts the intersection between a vector and this plane
     public double[] getIntersection(Vector v, double[] start){
         double t, plane, vector, div;
         double[] points = new double[3];
@@ -50,6 +53,7 @@ public class Plane {
         return points;
     }
     
+    //getters
     public Vector getNewVector(){
         return newVector;
     }

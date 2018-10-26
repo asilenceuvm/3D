@@ -1,8 +1,8 @@
 package pkg3d.main.gfx;
 
 /**
- *
  * @author asile
+ * Vector class for calculations
  */
 public class Vector {
     
@@ -13,6 +13,7 @@ public class Vector {
         this.y = y;
         this.z = z;
         
+        //converts to unit vector
         double length = Math.sqrt(x * x + y * y + z * z);
         if(length > 0){
             this.x = x/length;
@@ -21,6 +22,7 @@ public class Vector {
         }
     }
     
+    //calculates the cross product of the given vectors
     public static Vector crossProduct(Vector v1, Vector v2){
         Vector crossProduct = new Vector(
             v1.y * v2.z - v1.z * v2.y,
@@ -29,10 +31,13 @@ public class Vector {
         return crossProduct;
     }
     
+    //prints the vectors components
+    @Override
     public String toString(){
         return x + " " + y + " " + z;
     }
     
+    //getters
     public double getX(){
         return x;
     }

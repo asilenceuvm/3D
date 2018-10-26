@@ -5,8 +5,8 @@ import java.awt.Dimension;
 import javax.swing.JFrame;
 
 /**
- *
  * @author asile
+ * creates the window to display on
  */
 public class Display {
     

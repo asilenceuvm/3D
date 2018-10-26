@@ -5,8 +5,8 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
 /**
- *
- * @author asile
+ * @author asile\
+ * handles base level mouse input
  */
 public class MouseManager implements MouseListener, MouseMotionListener{
     
@@ -61,6 +61,7 @@ public class MouseManager implements MouseListener, MouseMotionListener{
         
     }
     
+    //getters & setters
     public double getDeltaX(){
         return deltaX;
     }

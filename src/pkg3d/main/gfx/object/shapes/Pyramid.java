@@ -1,15 +1,13 @@
 package pkg3d.main.gfx.object.shapes;
 
-import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import pkg3d.main.gfx.Camera;
 import pkg3d.main.gfx.object.PolygonManager;
 import pkg3d.main.gfx.object.PolygonObject;
 
 /**
- *
  * @author asile
+ * unfinsed shape do not use now
  */
 public class Pyramid extends Shape{
     

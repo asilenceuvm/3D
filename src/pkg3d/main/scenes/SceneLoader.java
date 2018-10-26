@@ -1,6 +1,5 @@
 package pkg3d.main.scenes;
 
-import java.awt.Color;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -14,8 +13,8 @@ import pkg3d.main.gfx.object.shapes.RectangularPrism;
 import pkg3d.main.gfx.object.shapes.Shape;
 
 /**
- *
  * @author asile
+ * Loads the scene from an input file
  */
 public class SceneLoader {
     
@@ -34,6 +33,7 @@ public class SceneLoader {
             Scanner sc = new Scanner(file);
             
             while (sc.hasNext()){ 
+                //rectangular prism
                 if(sc.next().equals("RP")){
                     x = sc.nextDouble();
                     y = sc.nextDouble();

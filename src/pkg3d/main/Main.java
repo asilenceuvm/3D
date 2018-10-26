@@ -16,8 +16,8 @@ import pkg3d.main.states.MainState;
 import pkg3d.main.states.State;
 
 /**
- *
  * @author asile
+ * Main class, handles raw input
  */
 public class Main extends Loop{
     
@@ -26,6 +26,7 @@ public class Main extends Loop{
     private Graphics g;
     private int width, height;
     
+    //player input
     private KeyManager keyManager;
     private MouseManager mouseManager;
     
@@ -33,6 +34,7 @@ public class Main extends Loop{
     
     @Override
     public void startup() {
+        //create window
         width = 1080;
         height = 720;
         display = new Display("3d", width, height);
@@ -45,6 +47,7 @@ public class Main extends Loop{
             }
         });
         
+        //input adding
         keyManager = new KeyManager();
         display.getFrame().addKeyListener(keyManager);
         display.getCanvas().addKeyListener(keyManager);
@@ -55,9 +58,13 @@ public class Main extends Loop{
         display.getFrame().addMouseMotionListener(mouseManager);
         display.getCanvas().addMouseMotionListener(mouseManager);
         
+        
+        //set up state system
         mainState = new MainState(this);
         State.setCurState(mainState);
         
+        //turn mouse invisible
+        //temporarily here will be moved later
         invisibleMouse();
     }
 
@@ -68,11 +75,13 @@ public class Main extends Loop{
 
     @Override
     public void update() {
+        //calls the current state to update
         State.getCurState().update();
     }
     
     @Override
     public void render() {
+        //set up graphics
         bs = display.getCanvas().getBufferStrategy();
 	if(bs == null){
             display.getCanvas().createBufferStrategy(3);
@@ -82,15 +91,15 @@ public class Main extends Loop{
 	//Clear Screen
 	g.clearRect(0, 0, width, height);
         
-        g.clipRect(0, 0, width, height);
-        g.setColor(new Color(140, 180, 180));
-        g.fillRect(0, 0, width, height);
-        
+        //draw current state
         State.getCurState().render(g);
         
 	bs.show();
 	g.dispose();
     }
+    
+    //sets mouse to invisble 
+    //to be moved later
     private void invisibleMouse() {
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         BufferedImage cursorImage = new BufferedImage(1, 1, BufferedImage.TRANSLUCENT);
@@ -98,6 +107,8 @@ public class Main extends Loop{
         display.getFrame().setCursor(invisibleCursor);
     }
     
+    
+    //getters 
     public State getState(){
         return State.getCurState();
     }

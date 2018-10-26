@@ -6,13 +6,14 @@ import pkg3d.main.gfx.object.PolygonManager;
 import pkg3d.main.gfx.object.PolygonObject;
 
 /**
- *
  * @author asile
+ * abstract class to make as a template for all shapes
  */
 public abstract class Shape {
     
     private PolygonManager polygonManager;
     protected Camera camera;
+    
     protected PolygonObject[] polys;
     protected double[][] corners;
     protected Plane[] planes;
@@ -43,6 +44,7 @@ public abstract class Shape {
         }
     }
     
+    //determines if mouse is over any part of the shape
     public boolean mouseOver(int width, int height){
         for(int i = 0; i < polys.length; i++){
             if(polys[i].mouseOver(width, height)){
@@ -52,6 +54,7 @@ public abstract class Shape {
         return false;
     }
     
+    //getters and setters
     public PolygonObject[] getPolys(){
         return polys;
     }
