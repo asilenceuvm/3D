@@ -128,4 +128,8 @@ public class Main extends Loop{
     public int getHeight(){
         return height;
     }
+
+    public Display getDisplay(){
+        return display;
+    }
 }

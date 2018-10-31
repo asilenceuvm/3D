@@ -37,4 +37,22 @@ public class Display {
     public Canvas getCanvas(){
         return canvas;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Display display = (Display) o;
+
+        if (frame != null ? !frame.getSize().equals(display.frame.getSize()) : display.frame != null) return false;
+        return canvas != null ? canvas.getSize().equals(display.canvas.getSize()) : display.canvas == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = frame != null ? frame.hashCode() : 0;
+        result = 31 * result + (canvas != null ? canvas.hashCode() : 0);
+        return result;
+    }
 }
