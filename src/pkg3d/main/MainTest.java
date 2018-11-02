@@ -24,11 +24,8 @@ class MainTest {
     }
 
     @Test
-    void shutdown() {
-    }
-
-    @Test
     void update() {
+
     }
 
     @Test
