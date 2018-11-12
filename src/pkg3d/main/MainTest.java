@@ -1,20 +1,16 @@
 package pkg3d.main;
 
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import pkg3d.main.gfx.Display;
-import pkg3d.main.input.KeyManager;
 import pkg3d.main.input.MouseManager;
-import pkg3d.main.states.MainState;
-import pkg3d.main.states.State;
 
 import javax.swing.*;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseMotionAdapter;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 class MainTest {
 

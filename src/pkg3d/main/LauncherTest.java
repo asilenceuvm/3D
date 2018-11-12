@@ -1,8 +1,7 @@
 package pkg3d.main;
 
-import org.junit.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 class LauncherTest {
 
