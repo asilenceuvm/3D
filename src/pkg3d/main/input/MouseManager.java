@@ -72,5 +72,16 @@ public class MouseManager implements MouseListener, MouseMotionListener{
     public boolean getLeftPressed(){
         return leftPressed;
     }
-    
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        MouseManager that = (MouseManager) o;
+
+        if (width != that.width) return false;
+        return height == that.height;
+    }
+
 }
