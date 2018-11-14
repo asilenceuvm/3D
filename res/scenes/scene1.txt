@@ -1,3 +1,1 @@
-RP 0 0 0 4 4 4 texture4.png
-RP -18 -28 -18 36 4 36 texture4.png
-RP -4 -4 -26 36 36 4 texture3.png
+RP 0 0 0 4 8 4 texture4.png
