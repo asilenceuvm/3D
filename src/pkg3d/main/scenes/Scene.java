@@ -53,16 +53,22 @@ public class Scene {
         entityManager = new EntityManager();
         
         //Entity e1 = new CubeEnemy(main, (RectangularPrism)box);
-        //e//ntityManager.addEntity(e1);
+        //entityManager.addEntity(e1);
         //Entity e2 = new CubeEnemy(main, (RectangularPrism)box2);
         //entityManager.addEntity(e2);
         
         for(Entity e: entityManager.getEntities()){
             //polygonManager.addShape(e.getShape());
         }
-        //polygonManager.addPolygon(new PolygonObject(controller.getCamera(), new double[]{0,1,1,0},
-         //       new double[]{0,0,1,1}, 
-         //       new double[]{0,0,0,0}, ImageLoader.loadImage("texture4.png")));
+        /*
+        PolygonObject p = new PolygonObject(controller.getCamera(),
+        new double[]{10, 12, 12, 10},
+        new double[]{12, 12, 16, 16},
+        new double[]{0,2,2,0},
+        ImageLoader.loadImage("texture4.png"), "z");
+        
+        polygonManager.addPolygon(p);
+        */
         //load scene from file
         SceneLoader sceneLoader = new SceneLoader();
         ArrayList<Shape> shapes = sceneLoader.loadFile(polygonManager, controller.getCamera());
