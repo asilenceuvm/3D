@@ -26,18 +26,16 @@ public class PolygonObject {
     private double[] x, y, z;
     
     private DrawPolygon[][] drawPolys;
-    private String direction;
     
     private double lighting = 1;
         
-    public PolygonObject(Camera camera, double[] x, double[] y, double[] z, BufferedImage texture, String direction){
+    public PolygonObject(Camera camera, double[] x, double[] y, double[] z, BufferedImage texture){
         this.camera = camera;
         this.x = x;
         this.y = y;
         this.z = z;
         this.texture = texture;
-        this.direction = direction;
-        
+
         polygon = new Polygon();
         vertecies = x.length;
         

@@ -89,7 +89,7 @@ public class Scene {
     public void render(Graphics g){
         //background color
         g.clipRect(0, 0, main.getWidth(), main.getHeight());
-        g.setColor(new Color(140, 180, 180));
+        g.setColor(new Color(140, 200, 220));
         g.fillRect(0, 0, main.getWidth(), main.getHeight());
         //draws all polygons
         polygonManager.render(g, main.getWidth(), main.getHeight());

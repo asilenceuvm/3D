@@ -25,8 +25,8 @@ public class PolygonManager {
     }
     
     //creates a polygon given arrays of points and adds it to the array list
-    public void addPolygon(double[] x, double[] y, double[] z, BufferedImage texture, String direction){
-        drawablePolygons.add(new PolygonObject(camera, x, y, z, texture, direction));
+    public void addPolygon(double[] x, double[] y, double[] z, BufferedImage texture){
+        drawablePolygons.add(new PolygonObject(camera, x, y, z, texture));
     }
     
     //adds a pre-existing polygon to the arraylist

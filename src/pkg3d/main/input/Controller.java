@@ -50,7 +50,7 @@ public class Controller {
             keys[3] = false;
         }
         
-        camera.move(keys, .5);
+        camera.move(keys, 1);
         
         //temp code
         camera.setDegbugMode(main.getKeyManager().getOPressed());
