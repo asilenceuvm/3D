@@ -19,7 +19,7 @@ public class PolygonObject {
     private BufferedImage texture;
     private int vertecies;
     
-    private boolean outlines=true;
+    private boolean outlines=false;
     private boolean rendering=true;
     
     private double avgDist;
@@ -53,8 +53,6 @@ public class PolygonObject {
         double ySlope = (y[3] - y[1]) / texture.getWidth();
         double zSlope = (z[2] - z[0]) / texture.getWidth();
         
-        System.out.println(zSlope);
-        
         if(ySlope < 0){
             ySlope = -ySlope;
         }
@@ -63,24 +61,22 @@ public class PolygonObject {
         
         for(int r = 0; r < drawPolys.length; r++){
             for(int c = 0; c < drawPolys[0].length; c++){
-                drawPolys[r][c] = new DrawPolygon(camera,
-                    new double[]{x[0] + ((c + 1) * xSlope) , x[0] + c * xSlope, x[0] + c * xSlope, x[0] + ((c + 1) * xSlope)},
-                    new double[]{y[0] + r * ySlope, y[0] + r * ySlope, y[0] + ((r + 1) * ySlope), y[0] +((r + 1) * ySlope)},
-                    new double[]{z[0] + ((c +1) * zSlope), z[0] + c * zSlope, z[0] + c * zSlope, z[0] + ((c + 1) * zSlope)},
-                    texture.getSubimage(r, c, 1, 1));
+                if(ySlope != 0){
+                    drawPolys[r][c] = new DrawPolygon(camera,
+                        new double[]{x[0] + ((r) * xSlope) , x[0] + ((r + 1) * xSlope), x[0] + ((r + 1) * xSlope), x[0] + ((r) * xSlope)},
+                        new double[]{y[0] + c * ySlope, y[0] + c * ySlope, y[0] + ((c + 1) * ySlope), y[0] +((c + 1) * ySlope)},
+                        new double[]{z[0] + ((r) * zSlope), z[0] + ((r + 1) * zSlope), z[0] + ((r + 1) * zSlope), z[0] + ((r) * zSlope)},
+                        texture.getSubimage(r, c, 1, 1));
+                } else {
+                    drawPolys[r][c] = new DrawPolygon(camera,
+                        new double[]{x[0] + ((c) * xSlope) , x[0] + ((c + 1) * xSlope), x[0] + ((c + 1) * xSlope), x[0] + ((c) * xSlope)},
+                        new double[]{y[0] + c * ySlope, y[0] + c * ySlope, y[0] + ((c + 1) * ySlope), y[0] +((c + 1) * ySlope)},
+                        new double[]{z[0] + ((r) * zSlope), z[0] + ((r) * zSlope), z[0] + ((r + 1) * zSlope), z[0] + ((r + 1) * zSlope)},
+                        texture.getSubimage(r, c, 1, 1));
+                }
+                
             }
         }
-        /*
-        for(int r = 0; r < drawPolys.length; r++){
-            for(int c = 0; c < drawPolys[0].length; c++){
-                drawPolys[r][c] = new DrawPolygon(camera,
-                    new double[]{x[0] + ((r + 1) * xSlope) , x[0] + r * xSlope, x[0] + r * xSlope, x[0] + ((r + 1) * xSlope)},
-                    new double[]{y[0] + ((c + 1) * ySlope), y[0] + ((c + 1) * ySlope), y[0] + ((c) * ySlope), y[0] +((c) * ySlope)},
-                    new double[]{z[0] + ((r +1) * zSlope), z[0] + r * zSlope, z[0] + r * zSlope, z[0] + ((r + 1) * zSlope)},
-                    texture.getSubimage(r, c, 1, 1));
-            }
-        }
-        */
     }
     
     //re-calculates where the polygon should be drawn 

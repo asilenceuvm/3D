@@ -63,8 +63,8 @@ public class Scene {
         /*
         PolygonObject p = new PolygonObject(controller.getCamera(),
         new double[]{10, 12, 12, 10},
-        new double[]{12, 12, 16, 16},
-        new double[]{0,2,2,0},
+        new double[]{12, 12, 11, 11},
+        new double[]{0,0,2,2},
         ImageLoader.loadImage("texture4.png"), "z");
         
         polygonManager.addPolygon(p);
