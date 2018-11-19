@@ -41,8 +41,8 @@ public class Scene {
         
         polygonManager = new PolygonManager(controller.getCamera());
         
-        //box = new RectangularPrism(polygonManager, controller.getCamera(),0, -8, 2, 1, 1, 1, ImageLoader.loadImage("texture4.png"));
-        //box2 = new RectangularPrism(polygonManager, controller.getCamera(),3, -8, 2, 2, 2, 2, ImageLoader.loadImage("texture4.png"));
+        box = new RectangularPrism(polygonManager, controller.getCamera(),0, -8, 2, 1, 1, 1, ImageLoader.loadImage("texture4.png"));
+        box2 = new RectangularPrism(polygonManager, controller.getCamera(),3, -8, 2, 2, 2, 2, ImageLoader.loadImage("texture4.png"));
         
         //lighting
         lightManager = new LightManager(controller.getCamera());
@@ -52,13 +52,13 @@ public class Scene {
         //entities
         entityManager = new EntityManager();
         
-        //Entity e1 = new CubeEnemy(main, (RectangularPrism)box);
-        //entityManager.addEntity(e1);
-        //Entity e2 = new CubeEnemy(main, (RectangularPrism)box2);
-        //entityManager.addEntity(e2);
+        Entity e1 = new CubeEnemy(main, (RectangularPrism)box);
+        entityManager.addEntity(e1);
+        Entity e2 = new CubeEnemy(main, (RectangularPrism)box2);
+        entityManager.addEntity(e2);
         
         for(Entity e: entityManager.getEntities()){
-            //polygonManager.addShape(e.getShape());
+            polygonManager.addShape(e.getShape());
         }
         /*
         PolygonObject p = new PolygonObject(controller.getCamera(),
@@ -93,6 +93,7 @@ public class Scene {
         g.fillRect(0, 0, main.getWidth(), main.getHeight());
         //draws all polygons
         polygonManager.render(g, main.getWidth(), main.getHeight());
+        
         //draws crosshair
         controller.render(g);
     }

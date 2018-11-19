@@ -1,7 +1,7 @@
 package pkg3d.main.gfx;
 
 import pkg3d.main.Main;
-import pkg3d.main.gfx.object.Plane;
+import pkg3d.main.gfx.object.PlaneObject;
 import pkg3d.main.input.MouseManager;
 
 /**
@@ -23,7 +23,7 @@ public class Camera {
     private Vector directionVector;
     private Vector planeVector1, planeVector2;
     private Vector drawVector1, drawVector2;
-    private Plane p;
+    private PlaneObject p;
     private double[] calcFocusPos;
     
     //parametric variable t
@@ -34,10 +34,7 @@ public class Camera {
     //camera zoom
     private double zoom = 1000;
     //speed camera rotates at
-    private double horizontalRotationSpeed = 900, verticalRotationSpeed = 2200;
-    
-    //used for free movement
-    private boolean debugMode;
+    private double horizontalRotationSpeed = 1100, verticalRotationSpeed = 2200;
     
     public Camera(Main main, double[] position, double[] viewPosition, MouseManager mouseManager) {
         this.main = main;
@@ -48,64 +45,7 @@ public class Camera {
         utils = new Utils();
     }
 
-    //main method to determine movement
-    public void move(boolean[] keys, double speed) {
-        //helper variables
-        Vector newViewVector = new Vector(viewPosition[0] - position[0], viewPosition[1] - position[1], viewPosition[2] - position[2]);
-        double deltaX = 0, deltaY = 0, deltaZ = 0;
-        Vector verticalVector = new Vector(0, 0, 1);
-        Vector horizontalVector = Vector.crossProduct(newViewVector, verticalVector);
-        
-        //free movement in debug mode
-        if(debugMode){
-            if (keys[0]) {
-                deltaX += newViewVector.getX();
-                deltaY += newViewVector.getY();
-                deltaZ += newViewVector.getZ();
-            }
-
-            if (keys[2]) {
-                deltaX -= newViewVector.getX();
-                deltaY -= newViewVector.getY();
-                deltaZ -= newViewVector.getZ();
-            }
-
-            if (keys[1]) {
-                deltaX += horizontalVector.getX();
-                deltaY += horizontalVector.getY();
-                deltaZ += horizontalVector.getZ();
-            }
-
-            if (keys[3]) {
-                deltaX -= horizontalVector.getX();
-                deltaY -= horizontalVector.getY();
-                deltaZ -= horizontalVector.getZ();
-            }
-        } else { //going to be used for regular movement like collision
-            if (keys[0]) {
-                deltaX += newViewVector.getX();
-                deltaY += newViewVector.getY();
-            }
-
-            if (keys[2]) {
-                deltaX -= newViewVector.getX();
-                deltaY -= newViewVector.getY();
-            }
-
-            if (keys[1]) {
-                deltaX += horizontalVector.getX();
-                deltaY += horizontalVector.getY();
-            }
-
-            if (keys[3]) {
-                deltaX -= horizontalVector.getX();
-                deltaY -= horizontalVector.getY();
-            }
-            
-        }
-        Vector moveVector = new Vector(deltaX, deltaY, deltaZ);
-        moveTo(position[0] + moveVector.getX() * speed, position[1] + moveVector.getY() * speed, position[2] + moveVector.getZ() * speed);
-    }
+    
     
     //movement of camera rotation, ex moving mouse
     public void rotateMove(double difX, double difY) {
@@ -125,7 +65,7 @@ public class Camera {
     }
     
     //helper method to move camera
-    private void moveTo(double x, double y, double z) {
+    public void moveTo(double x, double y, double z) {
         position[0] = x;
         position[1] = y;
         position[2] = z;
@@ -149,7 +89,7 @@ public class Camera {
     }
     
     //gets the intersection of the vector and the given plane by using parametric equations
-    private double[] getProj(double[] ViewFrom, double[] ViewTo, double x, double y, double z, Plane p) {
+    private double[] getProj(double[] ViewFrom, double[] ViewTo, double x, double y, double z, PlaneObject p) {
         Vector viewToPoint = new Vector(x - ViewFrom[0], y - ViewFrom[1], z - ViewFrom[2]);
 
         t = (p.getNewVector().getX() * p.getPoints()[0] + p.getNewVector().getY() * p.getPoints()[1] + p.getNewVector().getZ() * p.getPoints()[2]
@@ -192,7 +132,7 @@ public class Camera {
         directionVector = new Vector(1, 1, 1);
         planeVector1 = Vector.crossProduct(viewVector, directionVector);
         planeVector2 = Vector.crossProduct(viewVector, planeVector1);
-        p = new Plane(planeVector1, planeVector2, viewPosition);
+        p = new PlaneObject(planeVector1, planeVector2, viewPosition);
         
         Vector rotationVector = getRotationVector();
         drawVector1 = Vector.crossProduct(viewVector, rotationVector);
@@ -207,10 +147,6 @@ public class Camera {
     }
     
     //getters & setters
-    public void setDegbugMode(boolean debugMode){
-        this.debugMode = debugMode;
-    }
-    
     public double[] getPosition() {
         return position;
     }

@@ -21,21 +21,26 @@ public class PolygonObject {
     
     private boolean outlines=false;
     private boolean rendering=true;
+    private boolean drawing=true;
     
     private double avgDist;
     private double[] x, y, z;
     
     private DrawPolygon[][] drawPolys;
     
+    private String viewSide;
+    
     private double lighting = 1;
         
-    public PolygonObject(Camera camera, double[] x, double[] y, double[] z, BufferedImage texture){
+    public PolygonObject(Camera camera, double[] x, double[] y, double[] z, 
+            BufferedImage texture, String viewSide){
         this.camera = camera;
         this.x = x;
         this.y = y;
         this.z = z;
         this.texture = texture;
-
+        this.viewSide = viewSide;
+        
         polygon = new Polygon();
         vertecies = x.length;
         
@@ -107,6 +112,62 @@ public class PolygonObject {
                 drawPolys[r][c].update(width, height);
             }
         }
+        checkDraw();
+    }
+    
+    private void checkDraw(){
+        if (viewSide != null) {
+            if (viewSide.equals("+z")) {
+                if (camera.getPosition()[2] < z[0]) {
+                    drawing = false;
+                }
+            } else if (viewSide.equals("-z")) {
+                if (camera.getPosition()[2] > z[0]) {
+                    drawing = false;
+                }
+            } else if (viewSide.equals("+x")) {
+                if (camera.getPosition()[0] > x[0]) {
+                    drawing = false;
+                }
+            } else if (viewSide.equals("-x")) {
+                if (camera.getPosition()[0] < x[0]) {
+                    drawing = false;
+                }
+            } else if (viewSide.equals("+y")) {
+                if (camera.getPosition()[1] > y[0]) {
+                    drawing = false;
+                }
+            } else {
+                if (camera.getPosition()[1] < y[0]) {
+                    drawing = false;
+                }
+            }
+            if (viewSide.equals("+z")) {
+                if (camera.getPosition()[2] > z[0]) {
+                    drawing = true;
+                }
+            } else if (viewSide.equals("-z")) {
+                if (camera.getPosition()[2] < z[0]) {
+                    drawing = true;
+                }
+            } else if (viewSide.equals("+x")) {
+                if (camera.getPosition()[0] < x[0]) {
+                    drawing = true;
+                }
+            } else if (viewSide.equals("-x")) {
+                if (camera.getPosition()[0] > x[0]) {
+                    drawing = true;
+                }
+            } else if (viewSide.equals("+y")) {
+                if (camera.getPosition()[1] < y[0]) {
+                    drawing = true;
+                }
+            } else{
+                if (camera.getPosition()[1] > y[0]) {
+                    drawing = true;
+                }
+            }
+        }
     }
     
     public void render(Graphics g, int width, int height){
@@ -116,18 +177,20 @@ public class PolygonObject {
                 g.drawPolygon(polygon);
             }
         }
-        g.setClip(polygon);
-        for (int r = 0; r < texture.getHeight(); r++) {
-            for (int c = 0; c < texture.getHeight(); c++) {
-                drawPolys[r][c].render(g);
+        if(drawing){
+            g.setClip(polygon);
+            for (int r = 0; r < texture.getHeight(); r++) {
+                for (int c = 0; c < texture.getHeight(); c++) {
+                    drawPolys[r][c].render(g);
+                }
             }
+            g.setClip(null);
         }
-        g.setClip(null);
     }
     
     //calculates the lighting on the polygon
     public void calcLighting(double x, double y, double z) {
-        Plane lightingPlane = new Plane(this);
+        PlaneObject lightingPlane = new PlaneObject(this);
         double angle = Math.acos(((lightingPlane.getNewVector().getX() * x)
                 + (lightingPlane.getNewVector().getY() * y) + (lightingPlane.getNewVector().getZ() * z))
                 / (Math.sqrt(x * x + y * y + z * z)));
@@ -208,5 +271,8 @@ public class PolygonObject {
     
     public void setLighting(double lighting){
         this.lighting = lighting;
+    }
+    public void setDrawing(boolean drawing){
+        this.drawing = drawing;
     }
 }

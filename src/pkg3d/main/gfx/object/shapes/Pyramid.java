@@ -27,5 +27,4 @@ public class Pyramid extends Shape{
         polys[4] = new PolygonObject(camera, new double[]{x, x, x + baseLength / 2},
                 new double[]{y, y + baseLength, y + baseLength / 2}, new double[]{z, z, z + height}, texture);*/
     }
-
 }

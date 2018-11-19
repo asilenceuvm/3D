@@ -14,6 +14,6 @@ public class Launcher {
     
     public static void main(String[] args){
         Main main = new Main();
-        main.run(1/20.0);
+        main.run(1/40.0);
     }
 }

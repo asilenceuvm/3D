@@ -6,12 +6,12 @@ import pkg3d.main.gfx.Vector;
  * @author asile
  * Mathematical plane object
  */
-public class Plane {
+public class PlaneObject {
     private Vector vector1, vector2, newVector;
     private double[] points = new double[3];
     
     //creates a plane using a polygon object
-    public Plane(PolygonObject p) {
+    public PlaneObject(PolygonObject p) {
         points[0] = p.getX()[0];
         points[1] = p.getY()[0];
         points[2] = p.getZ()[0];
@@ -28,7 +28,7 @@ public class Plane {
     }
     
     //creates a plane given two vectors and an array of points
-    public Plane(Vector V1, Vector V2, double[] points) {
+    public PlaneObject(Vector V1, Vector V2, double[] points) {
         this.points = points;
         this.vector1 = V1;
         this.vector2 = V2;
