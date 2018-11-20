@@ -25,7 +25,7 @@ public class CubeEnemy extends Entity{
     @Override
     public void update() {
         move(xChange,0,yChange);
-        checkRemove(main.getWidth(), main.getHeight());
+        checkRemove();
     }
 
     @Override

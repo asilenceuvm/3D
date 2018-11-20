@@ -32,9 +32,9 @@ public abstract class Entity {
     public abstract void render(Graphics g);
     
     //checks whether enemy should be removed
-    public void checkRemove(int width, int height){
-        if(s.mouseOver(width, height)){
-            if(main.getMouseManager().getLeftPressed()){
+    public void checkRemove(){
+        if(s.mouseOver(main.getWidth(), main.getHeight())){
+            if(main.getState().getCurScene().getController().getShooting()){
                 remove = true;
             }
         }

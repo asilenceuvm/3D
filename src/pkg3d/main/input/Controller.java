@@ -1,10 +1,16 @@
 package pkg3d.main.input;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Polygon;
+import javafx.scene.shape.Circle;
 import pkg3d.main.Main;
 import pkg3d.main.gfx.Camera;
 import pkg3d.main.gfx.Utils;
 import pkg3d.main.gfx.Vector;
+import pkg3d.main.game.Gun;
+import pkg3d.main.states.State;
 
 /**
  * @author asile
@@ -18,14 +24,69 @@ public class Controller {
     
     private boolean debugMode;
     
+    private int health = 10;
+    private boolean shooting=false;
+    private long lastShot, shotTimer = lastShot;
+    private long lastReload, reloadTimer = lastReload, reloadCooldown=2000;
+    private boolean reloading=false;
+    
+    private Gun ak;
+    private Gun deagle;
+    private Gun awp;
+    private int curGun;
+    private Gun[] guns;
+    
     public Controller(Main main){
         this.main = main;
         utils = new Utils();
         camera = new Camera(main, new double[]{5, 10, 4}, new double[]{-5, -3, 0}, main.getMouseManager());
+        
+        ak = new Gun(30, 50, 100, 10, 1, false);
+        deagle = new Gun(10, 100, 500, 20, 1.5, false);
+        awp = new Gun(5, 100, 1000, 50, 4, true);
+        guns = new Gun[3];
+        guns[0] = ak;
+        guns[1] = deagle;
+        guns[2] = awp;
+        curGun = 0;
     }
     
     //updates movement
     public void update(){
+        setMove();
+        
+        debugMode = (main.getKeyManager().getOPressed());
+        
+        camera.update();
+        shoot();
+        
+        int move = main.getMouseManager().mouseWheelMove;
+        curGun += move;
+        while(curGun > guns.length-1){
+            curGun -= guns.length;
+        }
+        if(curGun < 0){
+            curGun = guns.length-1;
+        }
+        move=0;
+        main.getMouseManager().mouseWheelMove = 0;
+        
+        if(main.getKeyManager().getRTapped()){
+            reloading = true;
+        }
+        if(reloading){
+            reloadTimer += System.currentTimeMillis() - lastReload;
+            lastReload = System.currentTimeMillis();
+            if (reloadTimer > reloadCooldown) {
+                guns[curGun].setBullets(guns[curGun].getMaxBullets());
+                reloading = false;
+                reloadTimer=0;
+            }
+        }
+        lastReload = System.currentTimeMillis();
+    }
+    
+    public void setMove(){
         boolean[] keys = new boolean[4];
         if (main.getKeyManager().getWPressed()) {
             keys[0] = true;
@@ -54,11 +115,30 @@ public class Controller {
         }
         
         move(keys, 1);
-        
-        //temp code
-        debugMode = (main.getKeyManager().getOPressed());
-        
-        camera.update();
+    }
+    
+    public void shoot(){
+        shotTimer += System.currentTimeMillis() - lastShot;
+        lastShot = System.currentTimeMillis();
+        if (shotTimer > guns[curGun].getShotCooldown()) {
+            if (main.getMouseManager().getLeftPressed()) {
+                if (guns[curGun].getBullets() > 0) {
+                    guns[curGun].setBullets(guns[curGun].getBullets()-1);
+                    shooting = true;
+                    shotTimer=0;
+                    camera.rotateMove(0, -guns[curGun].getRecoil());
+                } else {
+                    shooting = false;
+                }
+            } else {
+                shooting = false;
+            }
+            if (health <= 0) {
+                State.setCurState(main.getDeathState());
+            }
+        } else {
+            shooting=false;
+        }
     }
     
     //main method to determine movement
@@ -127,6 +207,29 @@ public class Controller {
     //draws cross hair
     public void render(Graphics g){
         utils.drawMouseAim(g, main.getWidth(), main.getHeight(), 4);
+        for(int i = 0; i < health; i++){
+            g.drawImage(main.getImageManager().getImage("heart"), (i*33), main.getHeight()-48, 32,32,null);
+        }
+        g.drawImage(main.getImageManager().getImage("bullet"), main.getWidth()-48, main.getHeight()-48,32,32, null);
+        g.setColor(Color.gray);
+        g.setFont(new Font("TimesRoman", Font.PLAIN, 18)); 
+        g.drawString(Integer.toString(guns[curGun].getBullets()), main.getWidth()-64, main.getHeight()-32);
+        if(curGun == 0){
+            g.drawImage(main.getImageManager().getImage("ak"), (main.getWidth()/2) - 32, main.getHeight()-128, null);
+        } else if(curGun == 1){
+            g.drawImage(main.getImageManager().getImage("deagle"), (main.getWidth()/2) - 32, main.getHeight()-128, null);
+        } else if(curGun == 2){
+            g.drawImage(main.getImageManager().getImage("awp"), (main.getWidth()/2) - 32, main.getHeight()-128, null);
+        }
+        
+        if(main.getMouseManager().getRightPressed()){
+            camera.setZoom(Camera.DEFAULT_ZOOM * guns[curGun].getZoom());
+            if(guns[curGun].getScope()){
+                g.drawImage(main.getImageManager().getImage("scope"), 0, 0, main.getWidth(), main.getHeight(), null);
+            }
+        } else {
+            camera.setZoom(Camera.DEFAULT_ZOOM);
+        }
     }
     
     private boolean onGround(){
@@ -137,4 +240,8 @@ public class Controller {
     public Camera getCamera(){
         return camera;
     }
+    public boolean getShooting(){
+        return shooting;
+    }
 }
+

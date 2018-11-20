@@ -33,6 +33,7 @@ public class Camera {
     //angle camera is looking
     private double verticalLook = -0.8, horizontalLook = 0;
     //camera zoom
+    public static final double DEFAULT_ZOOM=1000;
     private double zoom = 1000;
     //speed camera rotates at
     private double horizontalRotationSpeed = 1100, verticalRotationSpeed = 2200;
@@ -174,6 +175,9 @@ public class Camera {
 
     public double getZoom() {
         return zoom;
+    }
+    public void setZoom(double zoom){
+        this.zoom = zoom;
     }
     
     public Polygon getScreenPoly(){

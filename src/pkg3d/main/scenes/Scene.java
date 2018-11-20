@@ -72,4 +72,8 @@ public class Scene {
         controller.render(g);
     }
     
+    public Controller getController(){
+        return controller;
+    }
+    
 }

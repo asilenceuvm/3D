@@ -119,61 +119,57 @@ public class PolygonObject {
     }
     
     private void checkDraw(){
-        if (polygon.intersects(camera.getScreenPoly().getBounds2D()) || camera.getScreenPoly().contains(polygon.getBounds2D())) {
-            if (viewSide != null) {
-                if (viewSide.equals("+z")) {
-                    if (camera.getPosition()[2] < z[0]) {
-                        drawing = false;
-                    }
-                } else if (viewSide.equals("-z")) {
-                    if (camera.getPosition()[2] > z[0]) {
-                        drawing = false;
-                    }
-                } else if (viewSide.equals("+x")) {
-                    if (camera.getPosition()[0] > x[0]) {
-                        drawing = false;
-                    }
-                } else if (viewSide.equals("-x")) {
-                    if (camera.getPosition()[0] < x[0]) {
-                        drawing = false;
-                    }
-                } else if (viewSide.equals("+y")) {
-                    if (camera.getPosition()[1] > y[0]) {
-                        drawing = false;
-                    }
-                } else {
-                    if (camera.getPosition()[1] < y[0]) {
-                        drawing = false;
-                    }
+        if (viewSide != null) {
+            if (viewSide.equals("+z")) {
+                if (camera.getPosition()[2] < z[0]) {
+                    drawing = false;
                 }
-                if (viewSide.equals("+z")) {
-                    if (camera.getPosition()[2] > z[0]) {
-                        drawing = true;
-                    }
-                } else if (viewSide.equals("-z")) {
-                    if (camera.getPosition()[2] < z[0]) {
-                        drawing = true;
-                    }
-                } else if (viewSide.equals("+x")) {
-                    if (camera.getPosition()[0] < x[0]) {
-                        drawing = true;
-                    }
-                } else if (viewSide.equals("-x")) {
-                    if (camera.getPosition()[0] > x[0]) {
-                        drawing = true;
-                    }
-                } else if (viewSide.equals("+y")) {
-                    if (camera.getPosition()[1] < y[0]) {
-                        drawing = true;
-                    }
-                } else {
-                    if (camera.getPosition()[1] > y[0]) {
-                        drawing = true;
-                    }
+            } else if (viewSide.equals("-z")) {
+                if (camera.getPosition()[2] > z[0]) {
+                    drawing = false;
+                }
+            } else if (viewSide.equals("+x")) {
+                if (camera.getPosition()[0] > x[0]) {
+                    drawing = false;
+                }
+            } else if (viewSide.equals("-x")) {
+                if (camera.getPosition()[0] < x[0]) {
+                    drawing = false;
+                }
+            } else if (viewSide.equals("+y")) {
+                if (camera.getPosition()[1] > y[0]) {
+                    drawing = false;
+                }
+            } else {
+                if (camera.getPosition()[1] < y[0]) {
+                    drawing = false;
                 }
             }
-        } else {
-            drawing = false;
+            if (viewSide.equals("+z")) {
+                if (camera.getPosition()[2] > z[0]) {
+                    drawing = true;
+                }
+            } else if (viewSide.equals("-z")) {
+                if (camera.getPosition()[2] < z[0]) {
+                    drawing = true;
+                }
+            } else if (viewSide.equals("+x")) {
+                if (camera.getPosition()[0] < x[0]) {
+                    drawing = true;
+                }
+            } else if (viewSide.equals("-x")) {
+                if (camera.getPosition()[0] > x[0]) {
+                    drawing = true;
+                }
+            } else if (viewSide.equals("+y")) {
+                if (camera.getPosition()[1] < y[0]) {
+                    drawing = true;
+                }
+            } else {
+                if (camera.getPosition()[1] > y[0]) {
+                    drawing = true;
+                }
+            }
         }
     }
     

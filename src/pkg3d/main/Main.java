@@ -14,6 +14,7 @@ import pkg3d.main.gfx.Display;
 import pkg3d.main.gfx.images.ImageManager;
 import pkg3d.main.input.KeyManager;
 import pkg3d.main.input.MouseManager;
+import pkg3d.main.states.DeathState;
 import pkg3d.main.states.MainState;
 import pkg3d.main.states.State;
 
@@ -33,6 +34,7 @@ public class Main extends Loop{
     private MouseManager mouseManager;
     
     private State mainState;
+    private State deathState;
     
     private ImageManager imageManager;
     
@@ -64,9 +66,12 @@ public class Main extends Loop{
         display.getCanvas().addMouseListener(mouseManager);
         display.getFrame().addMouseMotionListener(mouseManager);
         display.getCanvas().addMouseMotionListener(mouseManager);
+        display.getFrame().addMouseWheelListener(mouseManager);
+        display.getCanvas().addMouseWheelListener(mouseManager);
         
         //set up state system
         mainState = new MainState(this);
+        deathState = new DeathState();
         State.setCurState(mainState);
     }
 
@@ -104,6 +109,12 @@ public class Main extends Loop{
     //getters 
     public State getState(){
         return State.getCurState();
+    }
+    public State getMainState(){
+        return mainState;
+    }
+    public State getDeathState(){
+        return deathState;
     }
     
     public KeyManager getKeyManager(){

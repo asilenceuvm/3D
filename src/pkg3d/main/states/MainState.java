@@ -21,6 +21,7 @@ public class MainState extends State{
     public MainState(Main main){
         this.main = main;
         scene = new Scene(main);
+        curScene=scene;
         invisibleMouse();
     }
     
@@ -41,4 +42,5 @@ public class MainState extends State{
         Cursor invisibleCursor = toolkit.createCustomCursor(cursorImage, new Point(0, 0), "InvisibleCursor");
         main.getFrame().setCursor(invisibleCursor);
     }
+    
 }

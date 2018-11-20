@@ -13,6 +13,7 @@ public class KeyManager implements KeyListener{
     
     private boolean wPressed, aPressed, sPressed, dPressed;
     private boolean oPressed;
+    private boolean rPressed;
     
     public KeyManager(){
         oldKeys = new boolean[256];
@@ -91,5 +92,9 @@ public class KeyManager implements KeyListener{
     public boolean getSpacePressed(){return curKeys[KeyEvent.VK_SPACE];}
     public boolean getSpaceTapped() {
         return curKeys[KeyEvent.VK_SPACE] && curKeys[KeyEvent.VK_SPACE] != oldKeys[KeyEvent.VK_SPACE];
+    }
+
+    public boolean getRTapped() {
+        return curKeys[KeyEvent.VK_R] && curKeys[KeyEvent.VK_R] != oldKeys[KeyEvent.VK_R];
     }
 }
