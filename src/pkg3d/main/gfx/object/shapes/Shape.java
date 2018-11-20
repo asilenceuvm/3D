@@ -1,5 +1,6 @@
 package pkg3d.main.gfx.object.shapes;
 
+import pkg3d.main.Main;
 import pkg3d.main.gfx.Camera;
 import pkg3d.main.gfx.object.PlaneObject;
 import pkg3d.main.gfx.object.PolygonManager;
@@ -11,6 +12,7 @@ import pkg3d.main.gfx.object.PolygonObject;
  */
 public abstract class Shape {
     
+    protected Main main;
     private PolygonManager polygonManager;
     protected Camera camera;
     
@@ -19,7 +21,7 @@ public abstract class Shape {
     protected PlaneObject[] planes;
     protected double x,y,z;
     
-    public Shape(PolygonManager polygonManager, Camera camera, double x, double y, double z){
+    public Shape(Main main, PolygonManager polygonManager, Camera camera, double x, double y, double z){
         this.polygonManager = polygonManager;
         this.camera = camera;
         this.x = x;

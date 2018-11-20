@@ -4,6 +4,7 @@ import pkg3d.main.gfx.object.shapes.Shape;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import pkg3d.main.Main;
 import pkg3d.main.gfx.Camera;
 
 /**
@@ -12,6 +13,7 @@ import pkg3d.main.gfx.Camera;
  */
 public class PolygonManager {
     
+    private Main main;
     private Camera camera;
     
     private ArrayList<PolygonObject> drawablePolygons = new ArrayList();
@@ -20,13 +22,14 @@ public class PolygonManager {
     private int[] renderOrder; //order to draw polygons
     private PolygonObject polygonOver;
     
-    public PolygonManager(Camera camera){
+    public PolygonManager(Main main, Camera camera){
+        this.main = main;
         this.camera = camera;
     }
     
     //creates a polygon given arrays of points and adds it to the array list
     public void addPolygon(double[] x, double[] y, double[] z, BufferedImage texture, String viewSide){
-        drawablePolygons.add(new PolygonObject(camera, x, y, z, texture, viewSide));
+        drawablePolygons.add(new PolygonObject(main, camera, x, y, z, texture, viewSide));
     }
     
     //adds a pre-existing polygon to the arraylist
@@ -51,7 +54,7 @@ public class PolygonManager {
     
     public void update(int width, int height){
         for(int i = 0; i < drawablePolygons.size(); i++){
-            drawablePolygons.get(i).update(width, height);
+            drawablePolygons.get(i).update();
             drawablePolygons.get(i).setAvgDist(getDist(drawablePolygons.get(i)));
         }
     }
@@ -59,7 +62,7 @@ public class PolygonManager {
     public void render(Graphics g, int width, int height){
         setOrder();
         for(int i = 0; i < drawablePolygons.size(); i++){
-            drawablePolygons.get(renderOrder[i]).render(g, width, height);
+            drawablePolygons.get(renderOrder[i]).render(g);
         }
     }
     

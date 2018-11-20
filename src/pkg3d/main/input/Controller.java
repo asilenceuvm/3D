@@ -115,6 +115,9 @@ public class Controller {
                 deltaX -= horizontalVector.getX();
                 deltaY -= horizontalVector.getY();
             }
+            if(main.getKeyManager().getSpaceTapped() & onGround()){
+                deltaZ += 10;
+            }
             
         }
         Vector moveVector = new Vector(deltaX, deltaY, deltaZ);
@@ -124,6 +127,10 @@ public class Controller {
     //draws cross hair
     public void render(Graphics g){
         utils.drawMouseAim(g, main.getWidth(), main.getHeight(), 4);
+    }
+    
+    private boolean onGround(){
+        return true;
     }
     
     //getters & setters

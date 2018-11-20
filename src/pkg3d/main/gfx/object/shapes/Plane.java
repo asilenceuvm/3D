@@ -1,6 +1,7 @@
 package pkg3d.main.gfx.object.shapes;
 
 import java.awt.image.BufferedImage;
+import pkg3d.main.Main;
 import pkg3d.main.gfx.Camera;
 import pkg3d.main.gfx.object.PolygonManager;
 import pkg3d.main.gfx.object.PolygonObject;
@@ -11,9 +12,9 @@ import pkg3d.main.gfx.object.PolygonObject;
  */
 public class Plane extends Shape{
     
-    public Plane(PolygonManager polygonManager, Camera camera, double x, double y, double z,
+    public Plane(Main main, PolygonManager polygonManager, Camera camera, double x, double y, double z,
             double xSideLength, double ySideLength, double zSideLength, BufferedImage texture, String viewSide) {
-        super(polygonManager, camera, x, y, z);
+        super(main, polygonManager, camera, x, y, z);
         
         corners = new double[4][3];
         
@@ -24,7 +25,7 @@ public class Plane extends Shape{
         
         polys = new PolygonObject[1];
         
-        polys[0] = new PolygonObject(camera, new double[]{corners[0][0], corners[1][0], corners[2][0], corners[3][0]},
+        polys[0] = new PolygonObject(main, camera, new double[]{corners[0][0], corners[1][0], corners[2][0], corners[3][0]},
             new double[]{corners[0][1], corners[1][1], corners[2][1], corners[3][1]}, 
                 new double[]{corners[0][2], corners[1][2], corners[2][2], corners[3][2]}, texture, viewSide);
     }

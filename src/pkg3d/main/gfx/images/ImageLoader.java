@@ -1,4 +1,4 @@
-package pkg3d.main.gfx;
+package pkg3d.main.gfx.images;
 
 import java.awt.image.BufferedImage;
 import java.io.File;

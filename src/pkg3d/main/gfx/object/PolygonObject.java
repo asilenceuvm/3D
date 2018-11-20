@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Polygon;
 import java.awt.image.BufferedImage;
+import pkg3d.main.Main;
 import pkg3d.main.gfx.Camera;
 
 /**
@@ -13,6 +14,7 @@ import pkg3d.main.gfx.Camera;
  */
 public class PolygonObject {
     
+    private Main main;
     private Camera camera;
     
     private Polygon polygon;
@@ -32,8 +34,9 @@ public class PolygonObject {
     
     private double lighting = 1;
         
-    public PolygonObject(Camera camera, double[] x, double[] y, double[] z, 
+    public PolygonObject(Main main, Camera camera, double[] x, double[] y, double[] z, 
             BufferedImage texture, String viewSide){
+        this.main = main;
         this.camera = camera;
         this.x = x;
         this.y = y;
@@ -65,13 +68,13 @@ public class PolygonObject {
         for(int r = 0; r < drawPolys.length; r++){
             for(int c = 0; c < drawPolys[0].length; c++){
                 if(ySlope != 0){
-                    drawPolys[r][c] = new DrawPolygon(camera,
+                    drawPolys[r][c] = new DrawPolygon(main, camera,
                         new double[]{x[0] + ((r) * xSlope) , x[0] + ((r + 1) * xSlope), x[0] + ((r + 1) * xSlope), x[0] + ((r) * xSlope)},
                         new double[]{y[0] + c * ySlope, y[0] + c * ySlope, y[0] + ((c + 1) * ySlope), y[0] +((c + 1) * ySlope)},
                         new double[]{z[0] + ((r) * zSlope), z[0] + ((r + 1) * zSlope), z[0] + ((r + 1) * zSlope), z[0] + ((r) * zSlope)},
                         texture.getSubimage(r, c, 1, 1));
                 } else {
-                    drawPolys[r][c] = new DrawPolygon(camera,
+                    drawPolys[r][c] = new DrawPolygon(main, camera,
                         new double[]{x[0] + ((c) * xSlope) , x[0] + ((c + 1) * xSlope), x[0] + ((c + 1) * xSlope), x[0] + ((c) * xSlope)},
                         new double[]{y[0] + c * ySlope, y[0] + c * ySlope, y[0] + ((c + 1) * ySlope), y[0] +((c + 1) * ySlope)},
                         new double[]{z[0] + ((r) * zSlope), z[0] + ((r) * zSlope), z[0] + ((r + 1) * zSlope), z[0] + ((r + 1) * zSlope)},
@@ -83,7 +86,7 @@ public class PolygonObject {
     }
     
     //re-calculates where the polygon should be drawn 
-    public void update(int width, int height){
+    public void update(){
         double[] x = new double[vertecies];
         double[] y = new double[vertecies];
         
@@ -91,8 +94,8 @@ public class PolygonObject {
         rendering = true;
         for (int i = 0; i < vertecies; i++) {
             calcPos = camera.calculatePositionP(this.x[i], this.y[i], z[i]);
-            x[i] = (width / 2 - camera.getFocusPos()[0]) + calcPos[0] * camera.getZoom();
-            y[i] = (height / 2 - camera.getFocusPos()[1]) + calcPos[1] * camera.getZoom();
+            x[i] = (main.getWidth() / 2 - camera.getFocusPos()[0]) + calcPos[0] * camera.getZoom();
+            y[i] = (main.getHeight() / 2 - camera.getFocusPos()[1]) + calcPos[1] * camera.getZoom();
             
             if (camera.getT() < 0) { //distance to polygon is negative therefore behind the camera
                 rendering = false;
@@ -109,68 +112,72 @@ public class PolygonObject {
         
         for(int r=0; r < texture.getHeight(); r++){
             for(int c=0; c < texture.getHeight(); c++){
-                drawPolys[r][c].update(width, height);
+                drawPolys[r][c].update();
             }
         }
         checkDraw();
     }
     
     private void checkDraw(){
-        if (viewSide != null) {
-            if (viewSide.equals("+z")) {
-                if (camera.getPosition()[2] < z[0]) {
-                    drawing = false;
+        if (polygon.intersects(camera.getScreenPoly().getBounds2D()) || camera.getScreenPoly().contains(polygon.getBounds2D())) {
+            if (viewSide != null) {
+                if (viewSide.equals("+z")) {
+                    if (camera.getPosition()[2] < z[0]) {
+                        drawing = false;
+                    }
+                } else if (viewSide.equals("-z")) {
+                    if (camera.getPosition()[2] > z[0]) {
+                        drawing = false;
+                    }
+                } else if (viewSide.equals("+x")) {
+                    if (camera.getPosition()[0] > x[0]) {
+                        drawing = false;
+                    }
+                } else if (viewSide.equals("-x")) {
+                    if (camera.getPosition()[0] < x[0]) {
+                        drawing = false;
+                    }
+                } else if (viewSide.equals("+y")) {
+                    if (camera.getPosition()[1] > y[0]) {
+                        drawing = false;
+                    }
+                } else {
+                    if (camera.getPosition()[1] < y[0]) {
+                        drawing = false;
+                    }
                 }
-            } else if (viewSide.equals("-z")) {
-                if (camera.getPosition()[2] > z[0]) {
-                    drawing = false;
-                }
-            } else if (viewSide.equals("+x")) {
-                if (camera.getPosition()[0] > x[0]) {
-                    drawing = false;
-                }
-            } else if (viewSide.equals("-x")) {
-                if (camera.getPosition()[0] < x[0]) {
-                    drawing = false;
-                }
-            } else if (viewSide.equals("+y")) {
-                if (camera.getPosition()[1] > y[0]) {
-                    drawing = false;
-                }
-            } else {
-                if (camera.getPosition()[1] < y[0]) {
-                    drawing = false;
+                if (viewSide.equals("+z")) {
+                    if (camera.getPosition()[2] > z[0]) {
+                        drawing = true;
+                    }
+                } else if (viewSide.equals("-z")) {
+                    if (camera.getPosition()[2] < z[0]) {
+                        drawing = true;
+                    }
+                } else if (viewSide.equals("+x")) {
+                    if (camera.getPosition()[0] < x[0]) {
+                        drawing = true;
+                    }
+                } else if (viewSide.equals("-x")) {
+                    if (camera.getPosition()[0] > x[0]) {
+                        drawing = true;
+                    }
+                } else if (viewSide.equals("+y")) {
+                    if (camera.getPosition()[1] < y[0]) {
+                        drawing = true;
+                    }
+                } else {
+                    if (camera.getPosition()[1] > y[0]) {
+                        drawing = true;
+                    }
                 }
             }
-            if (viewSide.equals("+z")) {
-                if (camera.getPosition()[2] > z[0]) {
-                    drawing = true;
-                }
-            } else if (viewSide.equals("-z")) {
-                if (camera.getPosition()[2] < z[0]) {
-                    drawing = true;
-                }
-            } else if (viewSide.equals("+x")) {
-                if (camera.getPosition()[0] < x[0]) {
-                    drawing = true;
-                }
-            } else if (viewSide.equals("-x")) {
-                if (camera.getPosition()[0] > x[0]) {
-                    drawing = true;
-                }
-            } else if (viewSide.equals("+y")) {
-                if (camera.getPosition()[1] < y[0]) {
-                    drawing = true;
-                }
-            } else{
-                if (camera.getPosition()[1] > y[0]) {
-                    drawing = true;
-                }
-            }
+        } else {
+            drawing = false;
         }
     }
     
-    public void render(Graphics g, int width, int height){
+    public void render(Graphics g){
         if (rendering) {
             if (outlines) {
                 g.setColor(Color.BLACK);

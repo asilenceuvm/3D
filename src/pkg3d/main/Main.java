@@ -9,7 +9,9 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
+import javax.swing.JFrame;
 import pkg3d.main.gfx.Display;
+import pkg3d.main.gfx.images.ImageManager;
 import pkg3d.main.input.KeyManager;
 import pkg3d.main.input.MouseManager;
 import pkg3d.main.states.MainState;
@@ -32,6 +34,8 @@ public class Main extends Loop{
     
     private State mainState;
     
+    private ImageManager imageManager;
+    
     @Override
     public void startup() {
         //create window
@@ -47,6 +51,9 @@ public class Main extends Loop{
             }
         });
         
+        //load images
+        imageManager = new ImageManager();
+        
         //input adding
         keyManager = new KeyManager();
         display.getFrame().addKeyListener(keyManager);
@@ -58,14 +65,9 @@ public class Main extends Loop{
         display.getFrame().addMouseMotionListener(mouseManager);
         display.getCanvas().addMouseMotionListener(mouseManager);
         
-        
         //set up state system
         mainState = new MainState(this);
         State.setCurState(mainState);
-        
-        //turn mouse invisible
-        //temporarily here will be moved later
-        invisibleMouse();
     }
 
     @Override
@@ -77,6 +79,7 @@ public class Main extends Loop{
     public void update() {
         //calls the current state to update
         State.getCurState().update();
+        keyManager.update();
     }
     
     @Override
@@ -98,16 +101,6 @@ public class Main extends Loop{
 	g.dispose();
     }
     
-    //sets mouse to invisble 
-    //to be moved later
-    private void invisibleMouse() {
-        Toolkit toolkit = Toolkit.getDefaultToolkit();
-        BufferedImage cursorImage = new BufferedImage(1, 1, BufferedImage.TRANSLUCENT);
-        Cursor invisibleCursor = toolkit.createCustomCursor(cursorImage, new Point(0, 0), "InvisibleCursor");
-        display.getFrame().setCursor(invisibleCursor);
-    }
-    
-    
     //getters 
     public State getState(){
         return State.getCurState();
@@ -121,11 +114,19 @@ public class Main extends Loop{
         return mouseManager;
     }
     
+    public ImageManager getImageManager(){
+        return imageManager;
+    }
+    
     public int getWidth(){
         return width;
     }
     
     public int getHeight(){
         return height;
+    }
+    
+    public JFrame getFrame(){
+        return display.getFrame();
     }
 }

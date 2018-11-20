@@ -1,6 +1,7 @@
 package pkg3d.main.gfx.object.shapes;
 
 import java.awt.image.BufferedImage;
+import pkg3d.main.Main;
 import pkg3d.main.gfx.Camera;
 import pkg3d.main.gfx.object.PlaneObject;
 import pkg3d.main.gfx.object.PolygonManager;
@@ -13,9 +14,9 @@ import pkg3d.main.gfx.object.PolygonObject;
 public class RectangularPrism extends Shape{
     
     
-    public RectangularPrism(PolygonManager polygonManager, Camera camera, double x, double y, double z, 
+    public RectangularPrism(Main main, PolygonManager polygonManager, Camera camera, double x, double y, double z, 
             double xSideLength, double ySideLength, double zSideLength, BufferedImage texture){
-        super(polygonManager, camera,x,y,z);
+        super(main, polygonManager, camera,x,y,z);
         
         corners = new double[8][3];
         
@@ -34,27 +35,27 @@ public class RectangularPrism extends Shape{
         //inefficent but I couldn't think of a better way
         polys = new PolygonObject[6];
         
-        polys[0] = new PolygonObject(camera, new double[]{corners[0][0], corners[1][0], corners[2][0], corners[3][0]},
+        polys[0] = new PolygonObject(main, camera, new double[]{corners[0][0], corners[1][0], corners[2][0], corners[3][0]},
             new double[]{corners[0][1], corners[1][1], corners[2][1], corners[3][1]}, 
                 new double[]{corners[0][2], corners[1][2], corners[2][2], corners[3][2]}, texture, "-z");
         
-        polys[1] = new PolygonObject(camera, new double[]{corners[0][0], corners[1][0], corners[5][0], corners[4][0]},
+        polys[1] = new PolygonObject(main, camera, new double[]{corners[0][0], corners[1][0], corners[5][0], corners[4][0]},
             new double[]{corners[0][1], corners[1][1], corners[5][1], corners[4][1]}, 
                 new double[]{corners[0][2], corners[1][2], corners[5][2], corners[4][2]}, texture, "+y");
         
-        polys[2] = new PolygonObject(camera, new double[]{corners[4][0], corners[5][0], corners[6][0], corners[7][0]},
+        polys[2] = new PolygonObject(main, camera, new double[]{corners[4][0], corners[5][0], corners[6][0], corners[7][0]},
             new double[]{corners[4][1], corners[5][1], corners[6][1], corners[7][1]}, 
                 new double[]{corners[4][2], corners[5][2], corners[6][2], corners[7][2]}, texture, "+z");
         
-        polys[3] = new PolygonObject(camera, new double[]{corners[1][0], corners[2][0], corners[6][0], corners[5][0]},
+        polys[3] = new PolygonObject(main, camera, new double[]{corners[1][0], corners[2][0], corners[6][0], corners[5][0]},
             new double[]{corners[1][1], corners[2][1], corners[6][1], corners[5][1]}, 
                 new double[]{corners[1][2], corners[2][2], corners[6][2], corners[5][2]}, texture, "-x");
         
-        polys[4] = new PolygonObject(camera, new double[]{corners[2][0], corners[3][0], corners[7][0], corners[6][0]},
+        polys[4] = new PolygonObject(main, camera, new double[]{corners[2][0], corners[3][0], corners[7][0], corners[6][0]},
             new double[]{corners[2][1], corners[3][1], corners[7][1], corners[6][1]}, 
                 new double[]{corners[2][2], corners[3][2], corners[7][2], corners[6][2]}, texture, "-y");
         
-        polys[5] = new PolygonObject(camera, new double[]{corners[0][0], corners[4][0], corners[7][0], corners[3][0]},
+        polys[5] = new PolygonObject(main, camera, new double[]{corners[0][0], corners[4][0], corners[7][0], corners[3][0]},
             new double[]{corners[0][1], corners[4][1], corners[7][1], corners[3][1]}, 
                 new double[]{corners[0][2], corners[4][2], corners[6][2], corners[3][2]}, texture, "+x");
         

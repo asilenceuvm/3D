@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Polygon;
 import java.awt.image.BufferedImage;
+import pkg3d.main.Main;
 import pkg3d.main.gfx.Camera;
 
 /**
@@ -13,6 +14,7 @@ import pkg3d.main.gfx.Camera;
  */
 public class DrawPolygon {
     
+    private Main main;
     private Camera camera;
     
     private Polygon polygon;
@@ -21,11 +23,11 @@ public class DrawPolygon {
     
     private boolean rendering=true;
     
-    private double avgDist;
     private double[] x, y, z;
-    private double deltaX, deltaY, deltaZ;
+    private double deltaX, deltaY;
         
-    public DrawPolygon(Camera camera, double[] x, double[] y, double[] z, BufferedImage texture){
+    public DrawPolygon(Main main, Camera camera, double[] x, double[] y, double[] z, BufferedImage texture){
+        this.main = main;
         this.camera = camera;
         this.x = x;
         this.y = y;
@@ -42,7 +44,7 @@ public class DrawPolygon {
     }
     
     //re-calculates where the polygon should be drawn 
-    public void update(int width, int height){
+    public void update(){
         double[] x = new double[vertecies];
         double[] y = new double[vertecies];
         
@@ -50,8 +52,8 @@ public class DrawPolygon {
         rendering = true;
         for (int i = 0; i < vertecies; i++) {
             calcPos = camera.calculatePositionP(this.x[i], this.y[i], z[i]);
-            x[i] = (width / 2 - camera.getFocusPos()[0]) + calcPos[0] * camera.getZoom();
-            y[i] = (height / 2 - camera.getFocusPos()[1]) + calcPos[1] * camera.getZoom();
+            x[i] = (main.getWidth() / 2 - camera.getFocusPos()[0]) + calcPos[0] * camera.getZoom();
+            y[i] = (main.getHeight() / 2 - camera.getFocusPos()[1]) + calcPos[1] * camera.getZoom();
             
             if (camera.getT() < 0) { //distance to polygon is negative therefore behind the camera
                 rendering = false;
@@ -71,16 +73,9 @@ public class DrawPolygon {
         if (rendering) {
            g.setClip(polygon);
            g.drawImage(texture, polygon.getBounds().x, polygon.getBounds().y,polygon.getBounds().width,polygon.getBounds().height, null);
-           //g.drawPolygon(polygon);
            g.setClip(null);
         }
         
-    }
-    
-    
-    //determines if the polygon is in the center of the screen
-    public boolean mouseOver(int width, int height) {
-        return polygon.contains(width / 2, height / 2);
     }
     
     //getters & setters
@@ -90,13 +85,6 @@ public class DrawPolygon {
     
     public void setTexture(BufferedImage texture){
         this.texture = texture;
-    }
-    
-    public double getAvgDist(){
-        return avgDist;
-    }
-    public void setAvgDist(double avgDist){
-        this.avgDist = avgDist;
     }
     
     public void setX(double[] x){

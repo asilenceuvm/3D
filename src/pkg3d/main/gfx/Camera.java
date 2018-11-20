@@ -1,5 +1,6 @@
 package pkg3d.main.gfx;
 
+import java.awt.Polygon;
 import pkg3d.main.Main;
 import pkg3d.main.gfx.object.PlaneObject;
 import pkg3d.main.input.MouseManager;
@@ -36,6 +37,8 @@ public class Camera {
     //speed camera rotates at
     private double horizontalRotationSpeed = 1100, verticalRotationSpeed = 2200;
     
+    private Polygon screenPoly;
+    
     public Camera(Main main, double[] position, double[] viewPosition, MouseManager mouseManager) {
         this.main = main;
         this.position = position;
@@ -43,6 +46,12 @@ public class Camera {
         
         this.mouseManager = mouseManager;
         utils = new Utils();
+        
+        screenPoly = new Polygon();
+        screenPoly.addPoint(0, 0);
+        screenPoly.addPoint(0, main.getHeight());
+        screenPoly.addPoint(main.getWidth(), main.getHeight());
+        screenPoly.addPoint(main.getWidth(), 0);
     }
 
     
@@ -165,5 +174,9 @@ public class Camera {
 
     public double getZoom() {
         return zoom;
+    }
+    
+    public Polygon getScreenPoly(){
+        return screenPoly;
     }
 }
