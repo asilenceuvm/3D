@@ -1,5 +1,6 @@
 package pkg3d.main.scenes;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -10,7 +11,6 @@ import pkg3d.main.Main;
 import pkg3d.main.entities.CubeEnemy;
 import pkg3d.main.entities.Entity;
 import pkg3d.main.gfx.Camera;
-import pkg3d.main.gfx.images.ImageLoader;
 import pkg3d.main.gfx.object.PolygonManager;
 import pkg3d.main.gfx.object.shapes.Plane;
 import pkg3d.main.gfx.object.shapes.RectangularPrism;
@@ -22,10 +22,11 @@ import pkg3d.main.gfx.object.shapes.Shape;
  */
 public class SceneLoader {
     
+    private BufferedImage backgroundImage;
     private ArrayList<Shape> shapes = new ArrayList<>();
     private ArrayList<Entity> entities = new ArrayList<>();
     
-    public SceneLoader(Main main, PolygonManager p, Camera c){
+    public SceneLoader(Main main, PolygonManager p, Camera c, String scene){
         String object;
         double x;
         double y;
@@ -36,12 +37,17 @@ public class SceneLoader {
         String viewSide;
         String texture;
         try {
-            File file = new File("res\\scenes\\scene1.txt");
+            File file = new File("res\\scenes\\" + scene + ".txt");
             Scanner sc = new Scanner(file);
             
             while (sc.hasNext()){
                 object = sc.next();
                 //enviornment
+                //background
+                if(object.equals("BG")){
+                    texture = sc.next();
+                    backgroundImage = main.getImageManager().getImage(texture);
+                }
                 //rectangular prism
                 if(object.equals("RP")){
                     x = sc.nextDouble();
@@ -85,6 +91,17 @@ public class SceneLoader {
         }
     }
     
+    public void addGround(Main main, PolygonManager p, Camera camera, int length, int width){
+        for(int r = 0; r < width; r++){
+            for(int c = 0; c < length; c++){
+                shapes.add(new Plane(main, p, camera, r*16, c*16, 0, 16, 16, 0, main.getImageManager().getImage("tile1"), "+z"));
+            }
+        }
+    }
+    
+    public BufferedImage getBackgroundImage(){
+        return backgroundImage;
+    }
     public ArrayList<Shape> getShapes(){
          return shapes;
     }

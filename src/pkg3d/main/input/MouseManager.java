@@ -13,6 +13,7 @@ import java.awt.event.MouseWheelListener;
 public class MouseManager implements MouseListener, MouseMotionListener, MouseWheelListener{
     
     private double deltaX, deltaY;
+    private double mouseX, mouseY;
     private boolean leftPressed, rightPressed;
     private int width, height;
     public int mouseWheelMove;
@@ -32,6 +33,8 @@ public class MouseManager implements MouseListener, MouseMotionListener, MouseWh
     public void mouseMoved(MouseEvent me) {
         deltaX = me.getX() - width / 2;
         deltaY = me.getY() - height / 2;
+        mouseX = me.getX();
+        mouseY = me.getY();
     }
     
     
@@ -79,10 +82,17 @@ public class MouseManager implements MouseListener, MouseMotionListener, MouseWh
     public double getDeltaX(){
         return deltaX;
     }
-    
     public double getDeltaY(){
         return deltaY;
     }
+    
+    public double getMouseX(){
+        return mouseX;
+    }
+    public double getMouseY(){
+        return mouseY;
+    }
+    
     public boolean getLeftPressed(){
         return leftPressed;
     }

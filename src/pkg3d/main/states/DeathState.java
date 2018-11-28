@@ -21,6 +21,10 @@ public class DeathState extends State{
         g.setColor(Color.black);
         g.fillRect(0, 0, 10, 10);
     }
+
+    @Override
+    public void reloadState() {
+    }
     
     
 

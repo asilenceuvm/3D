@@ -1,0 +1,14 @@
+BG space
+P 0 1 0 48 12 0 ship +z
+P 48 1 0 48 12 0 ship +z
+P 0 1 12 48 12 0 ship -z
+RP 0 0 0 12 1 6 ship 
+RP 12 1 0 6 0 6 window
+RP 0 13 0 12 1 6 ship 
+RP -1 1 0 1 12 12 ship
+RP 12 13 0 6 0 6 window
+RP 0 0 6 48 1 6 ship 
+RP 0 13 6 48 1 6 ship
+RP 26 1 0 2.5 2.5 2.5 crate
+RP 18 0 0 64 1 6 ship
+CE 25 4 0 1 1 1 sdkfj

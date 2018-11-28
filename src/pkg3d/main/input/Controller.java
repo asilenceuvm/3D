@@ -3,13 +3,12 @@ package pkg3d.main.input;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Polygon;
-import javafx.scene.shape.Circle;
 import pkg3d.main.Main;
 import pkg3d.main.gfx.Camera;
 import pkg3d.main.gfx.Utils;
 import pkg3d.main.gfx.Vector;
 import pkg3d.main.game.Gun;
+import pkg3d.main.gfx.object.PolygonObject;
 import pkg3d.main.states.State;
 
 /**
@@ -36,6 +35,10 @@ public class Controller {
     private int curGun;
     private Gun[] guns;
     
+    private PolygonObject polyOver;
+    private double deltaX, deltaY, deltaZ;
+    private double oldZ;
+    
     public Controller(Main main){
         this.main = main;
         utils = new Utils();
@@ -49,6 +52,8 @@ public class Controller {
         guns[1] = deagle;
         guns[2] = awp;
         curGun = 0;
+        
+        oldZ = camera.getPosition()[2];
     }
     
     //updates movement
@@ -146,12 +151,17 @@ public class Controller {
         //helper variables
         Vector newViewVector = new Vector(camera.getViewPosition()[0] - camera.getPosition()[0], 
                 camera.getViewPosition()[1] - camera.getPosition()[1], camera.getViewPosition()[2] - camera.getPosition()[2]);
-        double deltaX = 0, deltaY = 0, deltaZ = 0;
+        deltaX = 0;
+        deltaY = 0;
+        //deltaZ = 0;
         Vector verticalVector = new Vector(0, 0, 1);
         Vector horizontalVector = Vector.crossProduct(newViewVector, verticalVector);
         
+        polyOver = main.getMainState().getCurScene().polyOver((int)camera.getPosition()[0],
+                (int)camera.getPosition()[1], (int)camera.getPosition()[2]);
         //free movement in debug mode
         if(debugMode){
+            deltaZ=0;
             if (keys[0]) {
                 deltaX += newViewVector.getX();
                 deltaY += newViewVector.getY();
@@ -195,10 +205,24 @@ public class Controller {
                 deltaX -= horizontalVector.getX();
                 deltaY -= horizontalVector.getY();
             }
-            if(main.getKeyManager().getSpaceTapped() & onGround()){
-                deltaZ += 10;
-            }
             
+            if(!onGround()){
+                deltaZ-=.01;
+            }
+            if(onGround()){
+                deltaZ = 0;
+                if(main.getKeyManager().getSpaceTapped()){
+                    deltaZ=.25;
+                }
+                if(main.getKeyManager().getShiftPressed()){
+                    camera.moveTo(camera.getPosition()[0], camera.getPosition()[1] , oldZ -1);
+                    speed *= .5;
+                } else {
+                    camera.moveTo(camera.getPosition()[0], camera.getPosition()[1], oldZ);
+                    oldZ = camera.getPosition()[2];
+                    speed *= 2;
+                }
+            }
         }
         Vector moveVector = new Vector(deltaX, deltaY, deltaZ);
         camera.moveTo(camera.getPosition()[0] + moveVector.getX() * speed, camera.getPosition()[1] + moveVector.getY() * speed, camera.getPosition()[2] + moveVector.getZ() * speed);
@@ -233,7 +257,12 @@ public class Controller {
     }
     
     private boolean onGround(){
-        return true;
+        if(polyOver != null){
+            if(polyOver.getZ()[0] + 5 > camera.getPosition()[2] && polyOver.getViewSide().equals("+z")){
+                return true;
+            }
+        }
+        return false;
     }
     
     //getters & setters

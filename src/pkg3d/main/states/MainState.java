@@ -6,6 +6,7 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import pkg3d.main.Main;
+import pkg3d.main.gfx.ui.PauseMenu;
 import pkg3d.main.scenes.Scene;
 
 /**
@@ -18,29 +19,52 @@ public class MainState extends State{
     private Main main;
     private Scene scene;
     
+    private boolean paused=false;
+    private PauseMenu pauseMenu;
+    
     public MainState(Main main){
         this.main = main;
         scene = new Scene(main);
         curScene=scene;
-        invisibleMouse();
+        pauseMenu = new PauseMenu(main);
+        
     }
     
     @Override
     public void update() {
-        scene.update();
+        if(!paused){
+            scene.update();
+            setMouseInvisible();
+        } else {
+            pauseMenu.update();
+            setMouseVisible();
+        }
+        paused = pauseMenu.checkPaused();
     }
 
     @Override
     public void render(Graphics g) {
         scene.render(g);
+        if(paused){
+            pauseMenu.render(g);
+        }
     }
     
     //sets mouse to invisble 
-    private void invisibleMouse() {
+    private void setMouseInvisible() {
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         BufferedImage cursorImage = new BufferedImage(1, 1, BufferedImage.TRANSLUCENT);
         Cursor invisibleCursor = toolkit.createCustomCursor(cursorImage, new Point(0, 0), "InvisibleCursor");
         main.getFrame().setCursor(invisibleCursor);
+    }
+    
+    private void setMouseVisible(){
+        main.getFrame().setCursor(Cursor.DEFAULT_CURSOR);
+    }
+
+    @Override
+    public void reloadState() {
+        setMouseInvisible();
     }
     
 }

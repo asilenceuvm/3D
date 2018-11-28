@@ -18,7 +18,7 @@ public class DrawPolygon {
     private Camera camera;
     
     private Polygon polygon;
-    private BufferedImage texture;
+    private Color color;
     private int vertecies;
     
     private boolean rendering=true;
@@ -26,13 +26,13 @@ public class DrawPolygon {
     private double[] x, y, z;
     private double deltaX, deltaY;
         
-    public DrawPolygon(Main main, Camera camera, double[] x, double[] y, double[] z, BufferedImage texture){
+    public DrawPolygon(Main main, Camera camera, double[] x, double[] y, double[] z, Color color){
         this.main = main;
         this.camera = camera;
         this.x = x;
         this.y = y;
         this.z = z;
-        this.texture = texture;
+        this.color = color;
         
         polygon = new Polygon();
         vertecies = x.length;
@@ -71,9 +71,14 @@ public class DrawPolygon {
     
     public void render(Graphics g){
         if (rendering) {
-           g.setClip(polygon);
-           g.drawImage(texture, polygon.getBounds().x, polygon.getBounds().y,polygon.getBounds().width,polygon.getBounds().height, null);
-           g.setClip(null);
+            //temp 
+            /*
+            g.setColor(Color.BLACK);
+            g.drawPolygon(polygon);
+            //
+*/
+            g.setColor(color);
+            g.fillPolygon(polygon);
         }
         
     }
@@ -81,10 +86,6 @@ public class DrawPolygon {
     //getters & setters
     public Polygon getPolygon(){
         return polygon;
-    }
-    
-    public void setTexture(BufferedImage texture){
-        this.texture = texture;
     }
     
     public void setX(double[] x){
@@ -121,6 +122,10 @@ public class DrawPolygon {
     }
     public double[] getZ(){
         return z;
+    }
+    
+    public Color getColor(){
+        return color;
     }
 }
 

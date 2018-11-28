@@ -1,14 +1,9 @@
 package pkg3d.main;
 
-import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.Graphics;
-import java.awt.Point;
-import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
-import java.awt.image.BufferedImage;
 import javax.swing.JFrame;
 import pkg3d.main.gfx.Display;
 import pkg3d.main.gfx.images.ImageManager;
@@ -16,6 +11,7 @@ import pkg3d.main.input.KeyManager;
 import pkg3d.main.input.MouseManager;
 import pkg3d.main.states.DeathState;
 import pkg3d.main.states.MainState;
+import pkg3d.main.states.MenuState;
 import pkg3d.main.states.State;
 
 /**
@@ -35,6 +31,7 @@ public class Main extends Loop{
     
     private State mainState;
     private State deathState;
+    private State menuState;
     
     private ImageManager imageManager;
     
@@ -72,7 +69,8 @@ public class Main extends Loop{
         //set up state system
         mainState = new MainState(this);
         deathState = new DeathState();
-        State.setCurState(mainState);
+        menuState = new MenuState(this);
+        State.setCurState(menuState);
     }
 
     @Override
@@ -112,6 +110,9 @@ public class Main extends Loop{
     }
     public State getMainState(){
         return mainState;
+    }
+    public State getMenuState(){
+        return menuState;
     }
     public State getDeathState(){
         return deathState;

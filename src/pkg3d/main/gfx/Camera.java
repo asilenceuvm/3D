@@ -74,6 +74,21 @@ public class Camera {
         utils.centerMouse(main.getWidth(), main.getHeight());
     }
     
+    public void rotateFree(double difX, double difY){
+        difY *= 6 - Math.abs(verticalLook) * 5;
+        verticalLook -= difY / verticalRotationSpeed;
+        horizontalLook += difX / horizontalRotationSpeed;
+
+        if (verticalLook > 0.999) {
+            verticalLook = 0.999;
+        }
+
+        if (verticalLook < -0.999) {
+            verticalLook = -0.999;
+        }
+        updateView();
+    }
+    
     //helper method to move camera
     public void moveTo(double x, double y, double z) {
         position[0] = x;
@@ -156,6 +171,24 @@ public class Camera {
         //9 and 38 account for the mouse size vs the actual half point on the screen
     }
     
+    public void update(double x, double y){
+        viewVector = new Vector(viewPosition[0] - position[0], viewPosition[1] - position[1], viewPosition[2] - position[2]);
+        directionVector = new Vector(1, 1, 1);
+        planeVector1 = Vector.crossProduct(viewVector, directionVector);
+        planeVector2 = Vector.crossProduct(viewVector, planeVector1);
+        p = new PlaneObject(planeVector1, planeVector2, viewPosition);
+        
+        Vector rotationVector = getRotationVector();
+        drawVector1 = Vector.crossProduct(viewVector, rotationVector);
+        drawVector2 = Vector.crossProduct(viewVector, drawVector1);
+
+        calcFocusPos = calculatePositionP(viewPosition[0], viewPosition[1], viewPosition[2]);
+        calcFocusPos[0] *= zoom;
+        calcFocusPos[1] *= zoom;
+        
+        rotateFree(x, y);
+    }
+    
     //getters & setters
     public double[] getPosition() {
         return position;
@@ -164,7 +197,9 @@ public class Camera {
     public double[] getViewPosition() {
         return viewPosition;
     }
-
+    public void setViewPosition(double[] viewPosition){
+        this.viewPosition = viewPosition;
+    }
     public double getT() {
         return t;
     }

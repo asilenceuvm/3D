@@ -16,7 +16,7 @@ public class PolygonManager {
     private Main main;
     private Camera camera;
     
-    private ArrayList<PolygonObject> drawablePolygons = new ArrayList();
+    private ArrayList<PolygonObject> drawablePolygons = new ArrayList<PolygonObject>();
     private ArrayList<Shape> shapes = new ArrayList();
     
     private int[] renderOrder; //order to draw polygons
@@ -56,6 +56,11 @@ public class PolygonManager {
         for(int i = 0; i < drawablePolygons.size(); i++){
             drawablePolygons.get(i).update();
             drawablePolygons.get(i).setAvgDist(getDist(drawablePolygons.get(i)));
+            for(int j = i; j < drawablePolygons.size(); j++){
+                if(drawablePolygons.get(i).getPolygon().contains(drawablePolygons.get(j).getPolygon().getBounds2D())){
+                    drawablePolygons.get(j).setDrawing(false);
+                } 
+            }
         }
     }
     
@@ -117,20 +122,8 @@ public class PolygonManager {
               + (camera.getPosition()[2] - p.getZ()[i]) * (camera.getPosition()[2] - p.getZ()[i]));
     }
     
-    //currently unused method
-    /*
-    private void setPolygonOver(int width, int height) {
-        polygonOver = null;
-        for (int i = renderOrder.length - 1; i >= 0; i--) {
-            if (drawablePolygons.get(renderOrder[i]).mouseOver(width, height)) {
-                polygonOver = drawablePolygons.get(renderOrder[i]).DrawablePolygon;
-                break;
-            }
-        }
-    }*/
-    
     //getters
-    public ArrayList getDrawablePolygons(){
+    public ArrayList<PolygonObject> getDrawablePolygons(){
         return drawablePolygons;
     }
     public ArrayList<Shape> getShapes(){

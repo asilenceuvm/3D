@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Polygon;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import pkg3d.main.Main;
 import pkg3d.main.gfx.Camera;
 
@@ -22,13 +23,13 @@ public class PolygonObject {
     private int vertecies;
     
     private boolean outlines=false;
-    private boolean rendering=true;
     private boolean drawing=true;
     
     private double avgDist;
     private double[] x, y, z;
     
     private DrawPolygon[][] drawPolys;
+    private DrawPolygon[] drawedPolys;
     
     private String viewSide;
     
@@ -64,24 +65,42 @@ public class PolygonObject {
         }
         
         drawPolys = new DrawPolygon[texture.getWidth()][texture.getHeight()];
+        drawedPolys = new DrawPolygon[texture.getWidth() * texture.getHeight()];
         
         for(int r = 0; r < drawPolys.length; r++){
             for(int c = 0; c < drawPolys[0].length; c++){
-                if(ySlope != 0){
-                    drawPolys[r][c] = new DrawPolygon(main, camera,
-                        new double[]{x[0] + ((r) * xSlope) , x[0] + ((r + 1) * xSlope), x[0] + ((r + 1) * xSlope), x[0] + ((r) * xSlope)},
-                        new double[]{y[0] + c * ySlope, y[0] + c * ySlope, y[0] + ((c + 1) * ySlope), y[0] +((c + 1) * ySlope)},
-                        new double[]{z[0] + ((r) * zSlope), z[0] + ((r + 1) * zSlope), z[0] + ((r + 1) * zSlope), z[0] + ((r) * zSlope)},
-                        texture.getSubimage(r, c, 1, 1));
-                } else {
-                    drawPolys[r][c] = new DrawPolygon(main, camera,
-                        new double[]{x[0] + ((c) * xSlope) , x[0] + ((c + 1) * xSlope), x[0] + ((c + 1) * xSlope), x[0] + ((c) * xSlope)},
-                        new double[]{y[0] + c * ySlope, y[0] + c * ySlope, y[0] + ((c + 1) * ySlope), y[0] +((c + 1) * ySlope)},
-                        new double[]{z[0] + ((r) * zSlope), z[0] + ((r) * zSlope), z[0] + ((r + 1) * zSlope), z[0] + ((r + 1) * zSlope)},
-                        texture.getSubimage(r, c, 1, 1));
+                int color = texture.getRGB(r, c);
+                int alpha = (color >> 24) & 0xff;
+                if (alpha != 0) {
+                    if (ySlope != 0) {
+                        drawPolys[r][c] = new DrawPolygon(main, camera,
+                                new double[]{x[0] + ((r) * xSlope), x[0] + ((r + 1) * xSlope), x[0] + ((r + 1) * xSlope), x[0] + ((r) * xSlope)},
+                                new double[]{y[0] + c * ySlope, y[0] + c * ySlope, y[0] + ((c + 1) * ySlope), y[0] + ((c + 1) * ySlope)},
+                                new double[]{z[0] + ((r) * zSlope), z[0] + ((r + 1) * zSlope), z[0] + ((r + 1) * zSlope), z[0] + ((r) * zSlope)},
+                                new Color(texture.getRGB(r, c)));
+                    } else {
+                        drawPolys[r][c] = new DrawPolygon(main, camera,
+                                new double[]{x[0] + ((c) * xSlope), x[0] + ((c + 1) * xSlope), x[0] + ((c + 1) * xSlope), x[0] + ((c) * xSlope)},
+                                new double[]{y[0] + c * ySlope, y[0] + c * ySlope, y[0] + ((c + 1) * ySlope), y[0] + ((c + 1) * ySlope)},
+                                new double[]{z[0] + ((r) * zSlope), z[0] + ((r) * zSlope), z[0] + ((r + 1) * zSlope), z[0] + ((r + 1) * zSlope)},
+                                new Color(texture.getRGB(r, c)));
+                    }
                 }
-                
             }
+        }
+        ArrayList<DrawPolygon> drawList = new ArrayList<DrawPolygon>();
+        
+        for(int r = 0; r < drawPolys.length; r++){
+            for(int c = 0; c < drawPolys[0].length; c++){
+                if(drawPolys[r][c] != null){
+                    drawList.add(drawPolys[r][c]);
+                }
+            }
+        }
+        
+        drawedPolys = new DrawPolygon[drawList.size()];
+        for(int i = 0; i < drawedPolys.length; i++){
+            drawedPolys[i] = drawList.get(i);
         }
     }
     
@@ -91,14 +110,13 @@ public class PolygonObject {
         double[] y = new double[vertecies];
         
         double[] calcPos;
-        rendering = true;
         for (int i = 0; i < vertecies; i++) {
             calcPos = camera.calculatePositionP(this.x[i], this.y[i], z[i]);
             x[i] = (main.getWidth() / 2 - camera.getFocusPos()[0]) + calcPos[0] * camera.getZoom();
             y[i] = (main.getHeight() / 2 - camera.getFocusPos()[1]) + calcPos[1] * camera.getZoom();
             
             if (camera.getT() < 0) { //distance to polygon is negative therefore behind the camera
-                rendering = false;
+                drawing = false;
             }
         }
         
@@ -110,10 +128,8 @@ public class PolygonObject {
             polygon.npoints = vertecies;
         }
         
-        for(int r=0; r < texture.getHeight(); r++){
-            for(int c=0; c < texture.getHeight(); c++){
-                drawPolys[r][c].update();
-            }
+        for(int i = 0; i < drawedPolys.length; i++){
+            drawedPolys[i].update();
         }
         checkDraw();
     }
@@ -174,20 +190,16 @@ public class PolygonObject {
     }
     
     public void render(Graphics g){
-        if (rendering) {
-            if (outlines) {
-                g.setColor(Color.BLACK);
-                g.drawPolygon(polygon);
-            }
+        if (outlines) {
+            g.setColor(Color.BLACK);
+            g.drawPolygon(polygon);
         }
         if(drawing){
-            g.setClip(polygon);
-            for (int r = 0; r < texture.getHeight(); r++) {
-                for (int c = 0; c < texture.getHeight(); c++) {
-                    drawPolys[r][c].render(g);
-                }
+            //g.setClip(polygon);
+            for(int i = 0; i < drawedPolys.length; i++){
+                drawedPolys[i].render(g);
             }
-            g.setClip(null);
+            //g.setClip(null);
         }
     }
     
@@ -219,6 +231,10 @@ public class PolygonObject {
     }
     public void setAvgDist(double avgDist){
         this.avgDist = avgDist;
+    }
+    
+    public Polygon getPolygon(){
+        return polygon;
     }
     
     public void setX(double[] x){
@@ -277,5 +293,8 @@ public class PolygonObject {
     }
     public void setDrawing(boolean drawing){
         this.drawing = drawing;
+    }
+    public String getViewSide(){
+        return viewSide;
     }
 }

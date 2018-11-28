@@ -13,7 +13,8 @@ public class KeyManager implements KeyListener{
     
     private boolean wPressed, aPressed, sPressed, dPressed;
     private boolean oPressed;
-    private boolean rPressed;
+    private boolean shiftPressed;
+    public boolean escapePressed;
     
     public KeyManager(){
         oldKeys = new boolean[256];
@@ -46,9 +47,15 @@ public class KeyManager implements KeyListener{
         if(ke.getKeyCode() == KeyEvent.VK_O){
             oPressed = !oPressed;
         }
+        if(ke.getKeyCode() == KeyEvent.VK_SHIFT){
+            shiftPressed = true;
+        }
+        if(ke.getKeyCode() == KeyEvent.VK_ESCAPE){
+            escapePressed = true;
+        }
         
         //temp to get out of enviornment
-        if(ke.getKeyCode() == KeyEvent.VK_ESCAPE){
+        if(ke.getKeyCode() == KeyEvent.VK_L){
             System.exit(0);
         }
         curKeys[ke.getKeyCode()] = true;
@@ -67,6 +74,9 @@ public class KeyManager implements KeyListener{
         }
         if(ke.getKeyCode() == KeyEvent.VK_D){
             dPressed = false;
+        }
+        if(ke.getKeyCode() == KeyEvent.VK_SHIFT){
+            shiftPressed = false;
         }
         curKeys[ke.getKeyCode()] = false;
     }
@@ -88,7 +98,9 @@ public class KeyManager implements KeyListener{
     public boolean getOPressed(){
         return oPressed;
     }
-    
+    public boolean getShiftPressed(){
+        return shiftPressed;
+    }
     public boolean getSpacePressed(){return curKeys[KeyEvent.VK_SPACE];}
     public boolean getSpaceTapped() {
         return curKeys[KeyEvent.VK_SPACE] && curKeys[KeyEvent.VK_SPACE] != oldKeys[KeyEvent.VK_SPACE];
@@ -96,5 +108,9 @@ public class KeyManager implements KeyListener{
 
     public boolean getRTapped() {
         return curKeys[KeyEvent.VK_R] && curKeys[KeyEvent.VK_R] != oldKeys[KeyEvent.VK_R];
+    }
+    
+    public boolean getEscapeTapped(){
+        return curKeys[KeyEvent.VK_ESCAPE] && curKeys[KeyEvent.VK_ESCAPE] != oldKeys[KeyEvent.VK_ESCAPE];
     }
 }
