@@ -2,6 +2,7 @@ package pkg3d.main.gfx.object;
 
 import pkg3d.main.gfx.object.shapes.Shape;
 import java.awt.Graphics;
+import java.awt.Polygon;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import pkg3d.main.Main;
@@ -20,7 +21,6 @@ public class PolygonManager {
     private ArrayList<Shape> shapes = new ArrayList();
     
     private int[] renderOrder; //order to draw polygons
-    private PolygonObject polygonOver;
     
     public PolygonManager(Main main, Camera camera){
         this.main = main;
@@ -56,11 +56,6 @@ public class PolygonManager {
         for(int i = 0; i < drawablePolygons.size(); i++){
             drawablePolygons.get(i).update();
             drawablePolygons.get(i).setAvgDist(getDist(drawablePolygons.get(i)));
-            for(int j = i; j < drawablePolygons.size(); j++){
-                if(drawablePolygons.get(i).getPolygon().contains(drawablePolygons.get(j).getPolygon().getBounds2D())){
-                    drawablePolygons.get(j).setDrawing(false);
-                } 
-            }
         }
     }
     
@@ -120,6 +115,25 @@ public class PolygonManager {
                 (camera.getPosition()[0] - p.getX()[i]) * (camera.getPosition()[0] - p.getX()[i])
               + (camera.getPosition()[1] - p.getY()[i]) * (camera.getPosition()[1] - p.getY()[i])
               + (camera.getPosition()[2] - p.getZ()[i]) * (camera.getPosition()[2] - p.getZ()[i]));
+    }
+    
+    public boolean checkIntersect(double x, double y, double z){
+        for(Shape s: shapes){
+            if(s.getMaxZ() != s.getMinZ()){
+                for (PolygonObject p : s.getPolys()) {
+                    if (p.getMinZ() == p.getMaxZ()) {
+                        Polygon p2 = new Polygon();
+                        for (int i = 0; i < p.getX().length; i++) {
+                            p2.addPoint((int) p.getX()[i], (int) p.getY()[i]);
+                        }
+                        if (p2.contains(x, y)) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
     }
     
     //getters

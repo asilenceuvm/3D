@@ -117,6 +117,7 @@ public class PolygonObject {
             
             if (camera.getT() < 0) { //distance to polygon is negative therefore behind the camera
                 drawing = false;
+               // rendering=false;
             }
         }
         
@@ -245,6 +246,26 @@ public class PolygonObject {
     }
     public void setZ(double[] z){
         this.z = z;
+    }
+    
+    public double getMaxZ(){
+        double maxZ = z[0];
+        for(int i = 0; i < z.length; i++){
+            if(z[i] > maxZ){
+                maxZ = z[i];
+            }
+        }
+        return maxZ;
+    }
+    
+    public double getMinZ(){
+        double minZ = z[0];
+        for(int i = 0; i < z.length; i++){
+            if(z[i] < minZ){
+                minZ = z[i];
+            }
+        }
+        return minZ;
     }
     
     public void addX(double delta){

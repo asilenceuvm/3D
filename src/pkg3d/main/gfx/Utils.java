@@ -13,7 +13,7 @@ public class Utils {
     
     //draws the crosshair
     public void drawMouseAim(Graphics g, int width, int height, int aimSight) {
-        g.setColor(Color.black);
+        g.setColor(Color.white);
         g.drawLine((int) (width / 2 - aimSight), (int) (height / 2), (int) (width / 2 + aimSight), (int) (height / 2));
         g.drawLine((int) (width / 2), (int) (height / 2 - aimSight), (int) (width / 2), (int) (height / 2 + aimSight));
     }

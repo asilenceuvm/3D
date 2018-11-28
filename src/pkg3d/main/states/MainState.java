@@ -65,6 +65,8 @@ public class MainState extends State{
     @Override
     public void reloadState() {
         setMouseInvisible();
+        paused = false;
+        main.getKeyManager().escapePressed=false;
     }
     
 }

@@ -8,6 +8,7 @@ import pkg3d.main.gfx.Camera;
 import pkg3d.main.gfx.Utils;
 import pkg3d.main.gfx.Vector;
 import pkg3d.main.game.Gun;
+import pkg3d.main.gfx.object.PolygonManager;
 import pkg3d.main.gfx.object.PolygonObject;
 import pkg3d.main.states.State;
 
@@ -20,6 +21,7 @@ public class Controller {
     private Main main;
     private Camera camera;
     private Utils utils;    
+    private PolygonManager polygonManager;
     
     private boolean debugMode;
     
@@ -39,10 +41,16 @@ public class Controller {
     private double deltaX, deltaY, deltaZ;
     private double oldZ;
     
+    private double xBound = 2;
+    private double boundWidth=2;
+    private double yBound = 2;
+    private double boundHeight=2;
+    
     public Controller(Main main){
         this.main = main;
         utils = new Utils();
         camera = new Camera(main, new double[]{5, 10, 4}, new double[]{-5, -3, 0}, main.getMouseManager());
+        polygonManager = new PolygonManager(main, camera);
         
         ak = new Gun(30, 50, 100, 10, 1, false);
         deagle = new Gun(10, 100, 500, 20, 1.5, false);
@@ -159,6 +167,10 @@ public class Controller {
         
         polyOver = main.getMainState().getCurScene().polyOver((int)camera.getPosition()[0],
                 (int)camera.getPosition()[1], (int)camera.getPosition()[2]);
+        double x; 
+        double y;
+        double xMove;
+        double yMove;
         //free movement in debug mode
         if(debugMode){
             deltaZ=0;
@@ -185,6 +197,10 @@ public class Controller {
                 deltaY -= horizontalVector.getY();
                 deltaZ -= horizontalVector.getZ();
             }
+            x = deltaX;
+            y = deltaY;
+            xMove = deltaX;
+            yMove = deltaY;
         } else { //going to be used for regular movement like collision
             if (keys[0]) {
                 deltaX += newViewVector.getX();
@@ -223,9 +239,48 @@ public class Controller {
                     speed *= 2;
                 }
             }
+            x = camera.getPosition()[0];
+            y = camera.getPosition()[1];
+            xMove=0;
+            yMove=0;
+            
+            if (deltaX > 0) { //Moving right
+                double tempX = x + deltaX + xBound + boundWidth;
+                if (!collision(tempX, y + yBound) && !collision(tempX, y + yBound + boundHeight)) {
+                    xMove += deltaX;
+                } else {
+                    xMove = 0;
+                }
+            } else if (deltaX < 0) { //Moving left
+                double tempX = x + deltaX + xBound;
+                if (!collision(tempX, y + yBound) && !collision(tempX, y + yBound + boundHeight)) {
+                    xMove += deltaX;
+                } else {
+                    xMove = 0;
+                }
+            }
+            if (deltaY > 0) { //forward
+                double tempY = y + deltaY + yBound + boundHeight;
+                if (!collision(x + xBound, tempY) && !collision(x + xBound + boundWidth, tempY)) {
+                    yMove += deltaY;
+                } else {
+                    yMove = 0;
+                }
+            } else if (deltaY < 0) { //backward
+                double tempY = y + deltaY + yBound;
+                if (!collision(x + xBound, tempY) && !collision(x + xBound + boundWidth, tempY)) {
+                    yMove += deltaY;
+                } else {
+                    yMove = 0;
+                }
+            }
         }
-        Vector moveVector = new Vector(deltaX, deltaY, deltaZ);
+        Vector moveVector = new Vector(xMove, yMove, deltaZ);
         camera.moveTo(camera.getPosition()[0] + moveVector.getX() * speed, camera.getPosition()[1] + moveVector.getY() * speed, camera.getPosition()[2] + moveVector.getZ() * speed);
+    }
+    
+    private boolean collision(double x, double y){
+        return main.getMainState().getCurScene().intersection(x, y, camera.getPosition()[2]);
     }
     
     //draws cross hair

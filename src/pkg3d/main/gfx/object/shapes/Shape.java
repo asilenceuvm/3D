@@ -40,10 +40,6 @@ public abstract class Shape {
             polys[i].addY(deltaY);
             polys[i].addZ(deltaZ);
         }
-        //cube collision Gilbert–Johnson–Keerthi_distance_algorithm
-        for(Shape s: polygonManager.getShapes()){
-            //if()
-        }
     }
     
     //determines if mouse is over any part of the shape
@@ -77,5 +73,24 @@ public abstract class Shape {
     }
     public double getZ(){
         return z;
+    }
+    
+    public double getMaxZ(){
+        double maxZ = polys[0].getMaxZ();
+        for(int i = 0; i < polys.length; i++){
+            if(polys[i].getMaxZ() > maxZ){
+                maxZ = polys[i].getMaxZ();
+            }
+        }
+        return maxZ;
+    }
+    public double getMinZ(){
+        double minZ = polys[0].getMinZ();
+        for(int i = 0; i < polys.length; i++){
+            if(polys[i].getMinZ() < minZ){
+                minZ = polys[i].getMaxZ();
+            }
+        }
+        return minZ;
     }
 }
