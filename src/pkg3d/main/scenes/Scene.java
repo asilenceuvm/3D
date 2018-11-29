@@ -110,7 +110,7 @@ public class Scene {
         return over;
     }
     
-    public boolean intersection(double x, double y, double z){
-        return polygonManager.checkIntersect(x, y, z);
+    public boolean intersection(double x, double y, double length, double width, double z){
+        return polygonManager.checkIntersect(x, y, length, width, z);
     }
 }

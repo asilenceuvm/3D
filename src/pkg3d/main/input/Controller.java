@@ -42,9 +42,9 @@ public class Controller {
     private double oldZ;
     
     private double xBound = 2;
-    private double boundWidth=2;
+    private double boundWidth=1;
     private double yBound = 2;
-    private double boundHeight=2;
+    private double boundHeight=1;
     
     public Controller(Main main){
         this.main = main;
@@ -127,7 +127,7 @@ public class Controller {
             keys[3] = false;
         }
         
-        move(keys, 1);
+        move(keys, .5);
     }
     
     public void shoot(){
@@ -243,7 +243,53 @@ public class Controller {
             y = camera.getPosition()[1];
             xMove=0;
             yMove=0;
-            
+            double xMod = 1;
+            double yMod = 1;
+            /*
+            if(!collision(x+deltaX+xBound, y+deltaY+yBound)){
+                xMove+=deltaX;
+                yMove+=deltaY;
+            }
+            //yMove+=deltaY;*/
+            if (deltaX >= 0) { //Moving right
+                double tempX = x + deltaX + 1;
+                if (!collision(tempX, y)) {
+                    xMove += deltaX;
+                } else {
+                    xMove = 0;
+                    yMod = .01;
+                }
+            }
+            if (deltaX <= 0) { //Moving right
+                double tempX = x + deltaX - 1;
+                if (!collision(tempX, y)) {
+                    xMove += deltaX;
+                } else {
+                    xMove = 0;
+                    yMod = .01;
+                }
+            }
+            if (deltaY >= 0) { //forward
+                double tempY = y + deltaY + 1;
+                if (!collision(x, tempY)) {
+                    yMove += deltaY;
+                } else {
+                    yMove = 0;
+                    xMod = .01;
+                }
+            }
+            else if (deltaY <= 0) { //forward
+                double tempY = y + deltaY - 1;
+                if (!collision(x, tempY)) {
+                    yMove += deltaY;
+                } else {
+                    yMove = 0;
+                    xMod = .01;
+                }
+            }
+            xMove *= xMod;
+            yMove *= yMod;
+            /*
             if (deltaX > 0) { //Moving right
                 double tempX = x + deltaX + xBound + boundWidth;
                 if (!collision(tempX, y + yBound) && !collision(tempX, y + yBound + boundHeight)) {
@@ -252,6 +298,7 @@ public class Controller {
                     xMove = 0;
                 }
             } else if (deltaX < 0) { //Moving left
+                
                 double tempX = x + deltaX + xBound;
                 if (!collision(tempX, y + yBound) && !collision(tempX, y + yBound + boundHeight)) {
                     xMove += deltaX;
@@ -273,14 +320,16 @@ public class Controller {
                 } else {
                     yMove = 0;
                 }
-            }
+            }*/
+            //System.out.println(collision(x,y));
         }
+        
         Vector moveVector = new Vector(xMove, yMove, deltaZ);
         camera.moveTo(camera.getPosition()[0] + moveVector.getX() * speed, camera.getPosition()[1] + moveVector.getY() * speed, camera.getPosition()[2] + moveVector.getZ() * speed);
     }
     
     private boolean collision(double x, double y){
-        return main.getMainState().getCurScene().intersection(x, y, camera.getPosition()[2]);
+        return main.getMainState().getCurScene().intersection(x, y, boundWidth, boundHeight, camera.getPosition()[2]);
     }
     
     //draws cross hair
