@@ -3,6 +3,8 @@ package pkg3d.main.entities;
 import java.awt.Graphics;
 import java.util.Random;
 import pkg3d.main.Main;
+import pkg3d.main.gfx.Camera;
+import pkg3d.main.gfx.object.PolygonManager;
 import pkg3d.main.gfx.object.shapes.RectangularPrism;
 
 /**
@@ -14,8 +16,11 @@ public class CubeEnemy extends Entity{
     private double xChange, yChange;
     private Random rand;
     
-    public CubeEnemy(Main main, RectangularPrism rp){
-        super(main, rp);
+    public CubeEnemy(Main main, PolygonManager polygonManager, Camera camera, double x, double y, double z){
+        super(main, polygonManager, camera);
+        s = new RectangularPrism(main, polygonManager, camera, x, y, z, 4, 4, 4, 
+                main.getImageManager().getImage("cubeEnemy"), main.getImageManager().getImage("cubeEnemy2"));
+        polygonManager.addShape(s);
         rand = new Random();
         //gives it a random direction to move
         xChange = rand.nextDouble()/20;
@@ -24,7 +29,7 @@ public class CubeEnemy extends Entity{
 
     @Override
     public void update() {
-        move(xChange,0,yChange);
+        move(xChange,yChange,0);
         checkRemove();
     }
 

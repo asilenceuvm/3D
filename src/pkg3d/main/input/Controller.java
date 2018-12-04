@@ -167,6 +167,7 @@ public class Controller {
         
         polyOver = main.getMainState().getCurScene().polyOver((int)camera.getPosition()[0],
                 (int)camera.getPosition()[1], (int)camera.getPosition()[2]);
+        
         double x; 
         double y;
         double xMove;
@@ -221,9 +222,11 @@ public class Controller {
                 deltaX -= horizontalVector.getX();
                 deltaY -= horizontalVector.getY();
             }
-            
+            /*
             if(!onGround()){
                 deltaZ-=.01;
+                deltaX/=5;
+                deltaY/=5;
             }
             if(onGround()){
                 deltaZ = 0;
@@ -239,21 +242,24 @@ public class Controller {
                     speed *= 2;
                 }
             }
+            */
+            
+            if(deltaZ <= 0){
+                double tempZ = camera.getPosition()[2] + deltaZ + 4;
+                if(!onGround()){
+                    
+                }
+            }
+            
             x = camera.getPosition()[0];
             y = camera.getPosition()[1];
             xMove=0;
             yMove=0;
             double xMod = 1;
             double yMod = 1;
-            /*
-            if(!collision(x+deltaX+xBound, y+deltaY+yBound)){
-                xMove+=deltaX;
-                yMove+=deltaY;
-            }
-            //yMove+=deltaY;*/
             if (deltaX >= 0) { //Moving right
-                double tempX = x + deltaX + 1;
-                if (!collision(tempX, y)) {
+                double tempX = x + deltaX + 2;
+                if (!collisionXY(tempX, y)) {
                     xMove += deltaX;
                 } else {
                     xMove = 0;
@@ -261,8 +267,8 @@ public class Controller {
                 }
             }
             if (deltaX <= 0) { //Moving right
-                double tempX = x + deltaX - 1;
-                if (!collision(tempX, y)) {
+                double tempX = x + deltaX - 2;
+                if (!collisionXY(tempX, y)) {
                     xMove += deltaX;
                 } else {
                     xMove = 0;
@@ -270,8 +276,8 @@ public class Controller {
                 }
             }
             if (deltaY >= 0) { //forward
-                double tempY = y + deltaY + 1;
-                if (!collision(x, tempY)) {
+                double tempY = y + deltaY + 2;
+                if (!collisionXY(x, tempY)) {
                     yMove += deltaY;
                 } else {
                     yMove = 0;
@@ -279,8 +285,8 @@ public class Controller {
                 }
             }
             else if (deltaY <= 0) { //forward
-                double tempY = y + deltaY - 1;
-                if (!collision(x, tempY)) {
+                double tempY = y + deltaY - 2;
+                if (!collisionXY(x, tempY)) {
                     yMove += deltaY;
                 } else {
                     yMove = 0;
@@ -289,47 +295,23 @@ public class Controller {
             }
             xMove *= xMod;
             yMove *= yMod;
-            /*
-            if (deltaX > 0) { //Moving right
-                double tempX = x + deltaX + xBound + boundWidth;
-                if (!collision(tempX, y + yBound) && !collision(tempX, y + yBound + boundHeight)) {
-                    xMove += deltaX;
-                } else {
-                    xMove = 0;
-                }
-            } else if (deltaX < 0) { //Moving left
-                
-                double tempX = x + deltaX + xBound;
-                if (!collision(tempX, y + yBound) && !collision(tempX, y + yBound + boundHeight)) {
-                    xMove += deltaX;
-                } else {
-                    xMove = 0;
-                }
-            }
-            if (deltaY > 0) { //forward
-                double tempY = y + deltaY + yBound + boundHeight;
-                if (!collision(x + xBound, tempY) && !collision(x + xBound + boundWidth, tempY)) {
-                    yMove += deltaY;
-                } else {
-                    yMove = 0;
-                }
-            } else if (deltaY < 0) { //backward
-                double tempY = y + deltaY + yBound;
-                if (!collision(x + xBound, tempY) && !collision(x + xBound + boundWidth, tempY)) {
-                    yMove += deltaY;
-                } else {
-                    yMove = 0;
-                }
-            }*/
-            //System.out.println(collision(x,y));
         }
         
         Vector moveVector = new Vector(xMove, yMove, deltaZ);
         camera.moveTo(camera.getPosition()[0] + moveVector.getX() * speed, camera.getPosition()[1] + moveVector.getY() * speed, camera.getPosition()[2] + moveVector.getZ() * speed);
     }
     
-    private boolean collision(double x, double y){
+    private boolean collisionXY(double x, double y){
         return main.getMainState().getCurScene().intersection(x, y, boundWidth, boundHeight, camera.getPosition()[2]);
+    }
+    
+    private boolean onGround(){
+        if(polyOver != null){
+            if(polyOver.getZ()[0] + 5 > camera.getPosition()[2] && polyOver.getViewSide().equals("+z")){
+                return true;
+            }
+        }
+        return false;
     }
     
     //draws cross hair
@@ -338,6 +320,10 @@ public class Controller {
         for(int i = 0; i < health; i++){
             g.drawImage(main.getImageManager().getImage("heart"), (i*33), main.getHeight()-48, 32,32,null);
         }
+        drawWeaponStuff(g);
+    }
+    
+    private void drawWeaponStuff(Graphics g){
         g.drawImage(main.getImageManager().getImage("bullet"), main.getWidth()-48, main.getHeight()-48,32,32, null);
         g.setColor(Color.gray);
         g.setFont(new Font("TimesRoman", Font.PLAIN, 18)); 
@@ -360,14 +346,7 @@ public class Controller {
         }
     }
     
-    private boolean onGround(){
-        if(polyOver != null){
-            if(polyOver.getZ()[0] + 5 > camera.getPosition()[2] && polyOver.getViewSide().equals("+z")){
-                return true;
-            }
-        }
-        return false;
-    }
+    
     
     //getters & setters
     public Camera getCamera(){

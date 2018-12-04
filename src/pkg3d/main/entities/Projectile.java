@@ -2,6 +2,9 @@ package pkg3d.main.entities;
 
 import java.awt.Graphics;
 import pkg3d.main.Main;
+import pkg3d.main.gfx.Camera;
+import pkg3d.main.gfx.object.PolygonManager;
+import pkg3d.main.gfx.object.shapes.RectangularPrism;
 import pkg3d.main.gfx.object.shapes.Shape;
 
 /**
@@ -10,8 +13,10 @@ import pkg3d.main.gfx.object.shapes.Shape;
  */
 public class Projectile extends Entity{
 
-    public Projectile(Main main, Shape s) {
-        super(main, s);
+    public Projectile(Main main, PolygonManager polygonManager, Camera camera, double x, double y, double z) {
+        super(main, polygonManager, camera);
+        s = new RectangularPrism(main, polygonManager, camera, x, y, z, 1, 1, 1, main.getImageManager().getImage("tile4"));
+        polygonManager.addShape(s);
     }
     
     @Override

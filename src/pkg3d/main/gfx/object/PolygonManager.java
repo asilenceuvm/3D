@@ -141,6 +141,17 @@ public class PolygonManager {
         return false;
     }
     
+    public boolean checkZIntersect(double x, double y, double length, double width, double z){
+        for(Shape s: shapes){
+            for(PolygonObject p: s.getPolys()){
+                if(p.getMinZ() == p.getMaxZ()){
+                    
+                }
+            }
+        }
+        return false;
+    }
+    
     //getters
     public ArrayList<PolygonObject> getDrawablePolygons(){
         return drawablePolygons;

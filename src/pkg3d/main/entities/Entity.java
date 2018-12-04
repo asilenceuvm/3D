@@ -2,6 +2,8 @@ package pkg3d.main.entities;
 
 import java.awt.Graphics;
 import pkg3d.main.Main;
+import pkg3d.main.gfx.Camera;
+import pkg3d.main.gfx.object.PolygonManager;
 import pkg3d.main.gfx.object.shapes.Shape;
 
 /**
@@ -23,9 +25,8 @@ public abstract class Entity {
     //boolean to determine if entity should be removed from game
     private boolean remove;
     
-    public Entity(Main main, Shape s){
+    public Entity(Main main, PolygonManager polygonManager, Camera camera){
         this.main = main;
-        this.s = s;
     }
     
     public abstract void update();

@@ -196,6 +196,7 @@ public class PolygonObject {
             g.drawPolygon(polygon);
         }
         if(drawing){
+            
             //g.setClip(polygon);
             for(int i = 0; i < drawedPolys.length; i++){
                 drawedPolys[i].render(g);

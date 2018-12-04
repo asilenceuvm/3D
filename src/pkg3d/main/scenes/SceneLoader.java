@@ -1,9 +1,11 @@
 package pkg3d.main.scenes;
 
+import java.awt.Polygon;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,6 +27,7 @@ public class SceneLoader {
     private BufferedImage backgroundImage;
     private ArrayList<Shape> shapes = new ArrayList<>();
     private ArrayList<Entity> entities = new ArrayList<>();
+    private int width, height;
     
     public SceneLoader(Main main, PolygonManager p, Camera c, String scene){
         String object;
@@ -74,6 +77,7 @@ public class SceneLoader {
                 //entities
                 //cube enemy
                 else if(object.equals("CE")){
+                    /*
                     x = sc.nextDouble();
                     y = sc.nextDouble();
                     z = sc.nextDouble();
@@ -84,6 +88,7 @@ public class SceneLoader {
                     RectangularPrism rp = (new RectangularPrism(main, p, c, x, y, z ,xWidth, yHeight, zDepth,  main.getImageManager().getImage(texture)));
                     shapes.add(rp);
                     entities.add(new CubeEnemy(main, rp));
+                    */
                 }
             }
         } catch (FileNotFoundException ex) {
@@ -97,6 +102,64 @@ public class SceneLoader {
                 shapes.add(new Plane(main, p, camera, r*16, c*16, 0, 16, 16, 0, main.getImageManager().getImage("tile1"), "+z"));
             }
         }
+        this.width = 16 * width;
+        this.height = 16 * length;
+    }
+    
+    public void addRects(Main main, PolygonManager p, Camera c, int num, int maxX, int maxY, int maxZ){
+        Random rand = new Random();
+        ArrayList<Polygon> tempPolys = new ArrayList<>();
+        int i = 0;
+        while(i < num){
+            int x = rand.nextInt(width-(maxX+4));
+            int y = rand.nextInt(height-(maxY+4));
+            int length = 4 + rand.nextInt(maxX);
+            int width = 4 + rand.nextInt(maxY);
+            int height = 6 + rand.nextInt(maxZ);
+            
+            String texture = "tile2";
+            
+            int j = rand.nextInt(3);
+            if(j == 0){
+                texture = "tile3";
+            }
+            else if(j == 1){
+                texture = "tile4";
+            }
+            
+            boolean conflict = false;
+            for(int k = 0; k < tempPolys.size(); k++){
+                if(tempPolys.get(k).intersects(x, y, length, width)){
+                    conflict = true;
+                }
+            }
+            
+            if(!conflict){
+                tempPolys.add(new Polygon(new int[]{x, x+length, x+length, x}, new int[]{y, y, y+width, y+width}, 4));
+                shapes.add(new RectangularPrism(main, p, c, x, y, 0 ,length, width, height, main.getImageManager().getImage(texture)));
+                i++;
+            }
+        }
+    }
+    
+    public void generateWalls(Main main, PolygonManager p, Camera c){
+        for(int i = 0; i < 8; i++){
+            shapes.add(new RectangularPrism(main, p, c, 16 * i, 0, 0 ,width/8, 1, 8, main.getImageManager().getImage("tile5")));
+        }
+        for(int i = 0; i < 8; i++){
+            shapes.add(new RectangularPrism(main, p, c, 2 + (16 * i), height, 0 ,width/8, 1, 8, main.getImageManager().getImage("tile5")));
+        }
+        for(int i = 0; i < 8; i++){
+            shapes.add(new RectangularPrism(main, p, c, 0, 16 * i, 0 ,1, height / 8, 8, main.getImageManager().getImage("tile5")));
+        }
+        for(int i = 0; i < 8; i++){
+            shapes.add(new RectangularPrism(main, p, c, width, 16 * i, 0 ,1, height /8, 8, main.getImageManager().getImage("tile5")));
+        }
+        /*
+        shapes.add(new RectangularPrism(main, p, c, 0, 0, 0 ,width, 1, 6, main.getImageManager().getImage("tile4")));
+        shapes.add(new RectangularPrism(main, p, c, 0, 0, 0 , 1, height, 6, main.getImageManager().getImage("tile4")));
+        shapes.add(new RectangularPrism(main, p, c, width, 0, 0 , 1, height, 6, main.getImageManager().getImage("tile4")));
+        shapes.add(new RectangularPrism(main, p, c, 0, height, 0 , width, 1, 6, main.getImageManager().getImage("tile4")));*/
     }
     
     public BufferedImage getBackgroundImage(){

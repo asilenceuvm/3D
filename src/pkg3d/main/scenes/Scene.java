@@ -6,6 +6,7 @@ import java.awt.Polygon;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import pkg3d.main.Main;
+import pkg3d.main.entities.CubeEnemy;
 import pkg3d.main.entities.Entity;
 import pkg3d.main.entities.EntityManager;
 import pkg3d.main.gfx.lighting.LightManager;
@@ -48,6 +49,8 @@ public class Scene {
         //load scene from file
         SceneLoader sceneLoader = new SceneLoader(main, polygonManager, controller.getCamera(), "scene3");
         sceneLoader.addGround(main, polygonManager, controller.getCamera(), 8, 8);
+        sceneLoader.addRects(main, polygonManager, controller.getCamera(), 15, 8, 20, 20);
+        sceneLoader.generateWalls(main, polygonManager, controller.getCamera());
         ArrayList<Shape> shapes = sceneLoader.getShapes();
         for(Shape s: shapes){
             polygonManager.addShape(s);
@@ -56,6 +59,7 @@ public class Scene {
         for(Entity e: entities){
             entityManager.addEntity(e);
         }
+        entityManager.addEntity(new CubeEnemy(main, polygonManager, controller.getCamera(),  15,  15,  1));
         backgroundImage = sceneLoader.getBackgroundImage();
     }
     

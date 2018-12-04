@@ -16,7 +16,8 @@ public class ImageManager {
     private BufferedImage awp;
     private BufferedImage scope;
     private BufferedImage sun;
-    private BufferedImage tile1, tile2, tile3, tile4;
+    private BufferedImage tile1, tile2, tile3, tile4, tile5;
+    private BufferedImage cubeEnemy, cubeEnemy2;
     private BufferedImage highlight;
     private BufferedImage startButton, startButtonActive;
     private BufferedImage quitButton, quitButtonActive;
@@ -27,17 +28,25 @@ public class ImageManager {
     
     public ImageManager(){
         error = ImageLoader.loadImage("error.png");
+        
         heart = ImageLoader.loadImage("heart.png");
         bullet = ImageLoader.loadImage("bullet.png");
+        
         deagle = ImageLoader.loadImage("deagle.png");
         ak = ImageLoader.loadImage("ak.png");
         awp = ImageLoader.loadImage("awp.png");
         scope = ImageLoader.loadImage("scope.png");
+        
         sun = ImageLoader.loadImage("sun.png");
         tile1 = ImageLoader.loadImage("tile1.png");
         tile2 = ImageLoader.loadImage("tile2.png");
         tile3 = ImageLoader.loadImage("tile3.png");
         tile4 = ImageLoader.loadImage("tile4.png");
+        tile5 = ImageLoader.loadImage("tile5.png");
+        
+        cubeEnemy = ImageLoader.loadImage("cubeEnemy.png");
+        cubeEnemy2 = ImageLoader.loadImage("cubeEnemy2.png");
+        
         highlight = ImageLoader.loadImage("highlight.png");
         startButton = ImageLoader.loadImage("playButton.png");
         startButtonActive = ImageLoader.loadImage("playButtonActive.png");
@@ -86,6 +95,15 @@ public class ImageManager {
         }
         else if(image.equals("tile4")){
             returnImage = tile4;
+        }
+        else if(image.equals("tile5")){
+            returnImage = tile5;
+        }
+        else if(image.equals("cubeEnemy")){
+            returnImage = cubeEnemy;
+        }
+        else if(image.equals("cubeEnemy2")){
+            returnImage = cubeEnemy2;
         }
         else if(image.equals("highlight")){
             returnImage = highlight;
