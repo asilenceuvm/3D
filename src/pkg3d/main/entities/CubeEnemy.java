@@ -19,7 +19,7 @@ public class CubeEnemy extends Entity{
     
     public CubeEnemy(Main main, PolygonManager polygonManager, Camera camera, double x, double y, double z){
         super(main, polygonManager, camera);
-        s = new RectangularPrism(main, polygonManager, camera, x, y, z, 2, 2, 2, 
+        s = new RectangularPrism(main, polygonManager, camera, x, y, z, 2, 2, 4, 
                 main.getImageManager().getImage("cubeEnemy"), main.getImageManager().getImage("cubeEnemy2"));
         polygonManager.addShape(s);
         rand = new Random();

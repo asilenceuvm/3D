@@ -72,7 +72,7 @@ public class Main extends Loop{
         mainState = new MainState(this);
         deathState = new DeathState(this);
         menuState = new MenuState(this);
-        State.setCurState(deathState);
+        State.setCurState(menuState);
     }
 
     @Override

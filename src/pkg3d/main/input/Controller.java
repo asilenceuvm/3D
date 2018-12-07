@@ -55,10 +55,10 @@ public class Controller {
         ak = new Gun(30, 50, 100, 10, 1, false);
         deagle = new Gun(10, 100, 500, 20, 1.5, false);
         awp = new Gun(5, 100, 1000, 50, 4, true);
-        guns = new Gun[3];
+        guns = new Gun[2];
         guns[0] = ak;
         guns[1] = deagle;
-        guns[2] = awp;
+        //guns[2] = awp;
         curGun = 0;
         
         oldZ = camera.getPosition()[2];

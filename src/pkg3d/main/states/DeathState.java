@@ -2,6 +2,7 @@ package pkg3d.main.states;
 
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import pkg3d.main.Main;
@@ -25,9 +26,9 @@ public class DeathState extends State{
         this.main = main;
         
         replayButton = new Button(main, main.getImageManager().getImage("playAgainButton"), main.getImageManager().getImage("playAgainButtonActive"),
-                main.getWidth()-400, (buttonHeight / 2), buttonWidth, buttonHeight);
+                main.getWidth() -1000, (int)(main.getHeight()) - (buttonHeight), buttonWidth, buttonHeight);
         menuButton = new Button(main, main.getImageManager().getImage("quitToMainButton"), main.getImageManager().getImage("quitToMainButtonActive"),
-                main.getWidth()-300, (int)(main.getHeight() / 2.3) - (buttonHeight / 2), buttonWidth, buttonHeight);
+                main.getWidth() - 400, (int)(main.getHeight()) - (buttonHeight), buttonWidth, buttonHeight);
         
         buttons.add(replayButton);
         buttons.add(menuButton);
@@ -39,6 +40,7 @@ public class DeathState extends State{
             b.update();
         });
         checkButtons();
+         main.getFrame().setCursor(Cursor.DEFAULT_CURSOR);
     }
     
     private void checkButtons() {
@@ -58,6 +60,9 @@ public class DeathState extends State{
         buttons.forEach((b) -> {
             b.render(g);
         });
+        g.setColor(Color.gray);
+        g.setFont(new Font("TimesRoman", Font.PLAIN, 18)); 
+        g.drawString("Score: " + Integer.toString(Main.score), main.getWidth()/2, main.getHeight()/2);
     }
 
     @Override
