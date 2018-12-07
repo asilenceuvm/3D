@@ -15,10 +15,11 @@ public class CubeEnemy extends Entity{
     
     private double xChange, yChange;
     private Random rand;
+    private long lastChange, changeTimer = lastChange, changeCooldown=500;
     
     public CubeEnemy(Main main, PolygonManager polygonManager, Camera camera, double x, double y, double z){
         super(main, polygonManager, camera);
-        s = new RectangularPrism(main, polygonManager, camera, x, y, z, 4, 4, 4, 
+        s = new RectangularPrism(main, polygonManager, camera, x, y, z, 2, 2, 2, 
                 main.getImageManager().getImage("cubeEnemy"), main.getImageManager().getImage("cubeEnemy2"));
         polygonManager.addShape(s);
         rand = new Random();
@@ -29,8 +30,21 @@ public class CubeEnemy extends Entity{
 
     @Override
     public void update() {
+        
         move(xChange,yChange,0);
         checkRemove();
+        changeTimer += System.currentTimeMillis() - lastChange;
+        lastChange = System.currentTimeMillis();
+        if(changeTimer > changeCooldown){
+            if(rand.nextBoolean()){
+                xChange =  rand.nextDouble()/5;
+                yChange =  rand.nextDouble()/5;
+            } else {
+                xChange =  -rand.nextDouble()/5;
+                yChange =  -rand.nextDouble()/5;
+            }
+            changeTimer=0;
+        }
     }
 
     @Override

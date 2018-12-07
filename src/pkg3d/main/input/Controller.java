@@ -317,9 +317,10 @@ public class Controller {
     //draws cross hair
     public void render(Graphics g){
         utils.drawMouseAim(g, main.getWidth(), main.getHeight(), 4);
+        /*
         for(int i = 0; i < health; i++){
             g.drawImage(main.getImageManager().getImage("heart"), (i*33), main.getHeight()-48, 32,32,null);
-        }
+        }*/
         drawWeaponStuff(g);
     }
     

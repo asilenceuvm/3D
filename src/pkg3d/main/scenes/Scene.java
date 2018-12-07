@@ -1,10 +1,12 @@
 package pkg3d.main.scenes;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Polygon;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Random;
 import pkg3d.main.Main;
 import pkg3d.main.entities.CubeEnemy;
 import pkg3d.main.entities.Entity;
@@ -14,13 +16,13 @@ import pkg3d.main.gfx.object.PolygonManager;
 import pkg3d.main.gfx.object.PolygonObject;
 import pkg3d.main.gfx.object.shapes.Shape;
 import pkg3d.main.input.Controller;
+import pkg3d.main.states.State;
 
 /**
  * @author asile
  * handles the main game enviornment
  */
 public class Scene {
-    
     private Main main;
     
     private PolygonManager polygonManager;
@@ -30,6 +32,12 @@ public class Scene {
     private Controller controller;
     
     private BufferedImage backgroundImage;
+    
+    private int playTime = 61;
+    private long lastTick, tickTimer = lastTick;
+    
+    private Random rand;
+    private long lastSpawn, spawnTimer = lastSpawn, spawnCooldown=1000;
     
     public Scene(Main main){
         this.main = main;
@@ -59,8 +67,10 @@ public class Scene {
         for(Entity e: entities){
             entityManager.addEntity(e);
         }
-        entityManager.addEntity(new CubeEnemy(main, polygonManager, controller.getCamera(),  15,  15,  1));
+        //entityManager.addEntity(new CubeEnemy(main, polygonManager, controller.getCamera(),  15,  15,  1));
         backgroundImage = sceneLoader.getBackgroundImage();
+        
+        rand = new Random();
     }
     
     //updates in game logic
@@ -69,6 +79,31 @@ public class Scene {
         polygonManager.update(main.getWidth(), main.getHeight());
         lightManager.update(polygonManager);
         entityManager.update(polygonManager);
+        checkEnd();
+        addEnemy();
+    }
+    
+    private void checkEnd(){
+        tickTimer += System.currentTimeMillis() - lastTick;
+        lastTick = System.currentTimeMillis();
+        if(tickTimer > 1000){
+            playTime--;
+            tickTimer=0;
+        }
+        if(playTime <= 0){
+            State.setCurState(main.getDeathState());
+        }
+    }
+    
+    private void addEnemy(){
+        spawnTimer += System.currentTimeMillis() - lastSpawn;
+        lastSpawn = System.currentTimeMillis();
+        if(spawnTimer > spawnCooldown){
+            double x = rand.nextDouble() * 8 * 16;
+            double y = rand.nextDouble() * 8 * 16;
+            entityManager.addEntity(new CubeEnemy(main, polygonManager, controller.getCamera(), x, y, 0));
+            spawnTimer=0;
+        }
     }
     
     public void render(Graphics g){
@@ -84,6 +119,11 @@ public class Scene {
         
         //draws crosshair
         controller.render(g);
+        
+        g.setColor(Color.white);
+        g.setFont(new Font("TimesRoman", Font.PLAIN, 18)); 
+        g.drawString("Time Left: " + Integer.toString(playTime), 20, 20);
+        g.drawString("Score: " + Integer.toString(Main.score), 20 ,main.getHeight()-20);
     }
     
     public Controller getController(){
@@ -116,5 +156,9 @@ public class Scene {
     
     public boolean intersection(double x, double y, double length, double width, double z){
         return polygonManager.checkIntersect(x, y, length, width, z);
+    }
+    
+    public void setTime(int playTime){
+        this.playTime = playTime;
     }
 }

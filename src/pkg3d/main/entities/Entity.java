@@ -36,6 +36,7 @@ public abstract class Entity {
     public void checkRemove(){
         if(s.mouseOver(main.getWidth(), main.getHeight())){
             if(main.getState().getCurScene().getController().getShooting()){
+                Main.score += 20;
                 remove = true;
             }
         }

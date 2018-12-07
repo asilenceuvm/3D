@@ -35,6 +35,8 @@ public class Main extends Loop{
     
     private ImageManager imageManager;
     
+    public static int score = 0;
+    
     @Override
     public void startup() {
         //create window
@@ -68,9 +70,9 @@ public class Main extends Loop{
         
         //set up state system
         mainState = new MainState(this);
-        deathState = new DeathState();
+        deathState = new DeathState(this);
         menuState = new MenuState(this);
-        State.setCurState(mainState);
+        State.setCurState(deathState);
     }
 
     @Override

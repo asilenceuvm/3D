@@ -107,22 +107,22 @@ public class Camera {
     
     //calculates the drawing for the polygons
     public double[] calculatePositionP(double x, double y, double z) {
-        double[] projP = getProj(position, viewPosition, x, y, z, p);
+        double[] projP = getProj(position, x, y, z, p);
         double[] drawP = getDrawP(projP[0], projP[1], projP[2]);
 
         return drawP;
     }
     
     //gets the intersection of the vector and the given plane by using parametric equations
-    private double[] getProj(double[] ViewFrom, double[] ViewTo, double x, double y, double z, PlaneObject p) {
-        Vector viewToPoint = new Vector(x - ViewFrom[0], y - ViewFrom[1], z - ViewFrom[2]);
+    private double[] getProj(double[] viewFrom,  double x, double y, double z, PlaneObject p) {
+        Vector viewToPoint = new Vector(x - viewFrom[0], y - viewFrom[1], z - viewFrom[2]);
 
         t = (p.getNewVector().getX() * p.getPoints()[0] + p.getNewVector().getY() * p.getPoints()[1] + p.getNewVector().getZ() * p.getPoints()[2]
-                - (p.getNewVector().getX() * ViewFrom[0] + p.getNewVector().getY() * ViewFrom[1] + p.getNewVector().getZ() * ViewFrom[2]))
+                - (p.getNewVector().getX() * viewFrom[0] + p.getNewVector().getY() * viewFrom[1] + p.getNewVector().getZ() * viewFrom[2]))
                 / (p.getNewVector().getX() * viewToPoint.getX() + p.getNewVector().getY() * viewToPoint.getY() + p.getNewVector().getZ() * viewToPoint.getZ());
-        x = ViewFrom[0] + viewToPoint.getX() * t;
-        y = ViewFrom[1] + viewToPoint.getY() * t;
-        z = ViewFrom[2] + viewToPoint.getZ() * t;
+        x = viewFrom[0] + viewToPoint.getX() * t;
+        y = viewFrom[1] + viewToPoint.getY() * t;
+        z = viewFrom[2] + viewToPoint.getZ() * t;
         return new double[]{x, y, z};
     }
 

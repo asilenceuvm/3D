@@ -24,6 +24,8 @@ public class ImageManager {
     private BufferedImage optionButton, optionButtonActive;
     private BufferedImage resumeButton, resumeButtonActive;
     private BufferedImage returnButton, returnButtonActive;
+    private BufferedImage playAgainButton, playAgainButtonActive;
+    private BufferedImage quitToMainButton, quitToMainButtonActive;
     private BufferedImage background;
     
     public ImageManager(){
@@ -58,7 +60,12 @@ public class ImageManager {
         returnButtonActive = ImageLoader.loadImage("returnButtonActive.png");
         resumeButton = ImageLoader.loadImage("resumeButton.png");
         resumeButtonActive = ImageLoader.loadImage("resumeButtonActive.png");
-        background = ImageLoader.loadImage("background.png");
+        playAgainButton = ImageLoader.loadImage("playAgainButton.png");
+        playAgainButtonActive = ImageLoader.loadImage("playAgainButtonActive.png");
+        quitToMainButton = ImageLoader.loadImage("quitToMainButton.png");
+        quitToMainButtonActive = ImageLoader.loadImage("quitToMainButtonActive.png");
+        
+        background = ImageLoader.loadImage("outrun.png");
     }
     
     public BufferedImage getImage(String image){
@@ -140,6 +147,18 @@ public class ImageManager {
         }
         else if(image.equals("returnButtonActive")){
             returnImage = returnButtonActive;
+        }
+        else if(image.equals("playAgainButton")){
+            returnImage = playAgainButton;
+        }
+        else if(image.equals("playAgainButtonActive")){
+            returnImage = playAgainButtonActive;
+        }
+        else if(image.equals("quitToMainButton")){
+            returnImage = quitToMainButton;
+        }
+        else if(image.equals("quitToMainButtonActive")){
+            returnImage = quitToMainButtonActive;
         }
         return returnImage;
     }

@@ -67,6 +67,8 @@ public class MainState extends State{
         setMouseInvisible();
         paused = false;
         main.getKeyManager().escapePressed=false;
+        Main.score = 0;
+        scene.setTime(61);
     }
     
 }

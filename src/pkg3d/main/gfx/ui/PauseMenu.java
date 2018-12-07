@@ -27,7 +27,7 @@ public class PauseMenu {
         
         int middle = (main.getWidth()/2) - (buttonWidth/2);
         
-        mainMenu = new Button(main, main.getImageManager().getImage("returnButtonActive"), main.getImageManager().getImage("returnButton"), 
+        mainMenu = new Button(main, main.getImageManager().getImage("quitToMainButton"), main.getImageManager().getImage("quitToMainButtonActive"), 
                 middle, (main.getHeight()/2) - (buttonHeight/2),buttonWidth, buttonHeight);
         unPause = new Button(main, main.getImageManager().getImage("resumeButtonActive"), main.getImageManager().getImage("resumeButton"), 
                 middle, (main.getHeight()/4) - (buttonHeight/2),buttonWidth, buttonHeight);
