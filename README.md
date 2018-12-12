@@ -7,3 +7,6 @@ Thanks to https://github.com/javatutorials101/Tutorials for the idea behind the 
 
 Thanks to CodeNMore (https://www.youtube.com/user/CodeNMore) who I learned how to program from. 
 I used much of the structure he wrote for the program.
+
+
+This program won 2nd place in the intermediate programming category of UVM's annual computer science fair in 2018.
